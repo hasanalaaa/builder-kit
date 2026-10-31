@@ -30,7 +30,7 @@ Security checks for payments live in `launch-security` 19 (prices/payments), P12
 
 1. Decide the model from the spec: one-off, subscription (per seat / tiered / usage-based), credits, marketplace; merchant of record or not (`billing.md` §1).
 2. Model data (`billing.md` §2) and plan catalog (in provider + mirrored config).
-3. Build checkout (hosted), webhooks handler (verified, idempotent, job queue), entitlement updates, customer portal link.
+3. Build checkout (hosted), webhooks handler, entitlement updates, customer portal link. The webhook handler: verify the signature on the raw body, record `event.id` under a unique constraint in the same transaction as the side effect (duplicate → return 200 and stop), return 200 fast and push slow work to a job queue.
 4. Gate features with `hasEntitlement(user, 'feature')`.
 5. Handle lifecycle emails (receipt, trial ending, payment failed, canceled) (`email-notifications`).
 6. Test in test mode with test clocks: every event and state transition, duplicates, out-of-order events, failed cards, 3DS, refunds, disputes (`billing.md` §11).

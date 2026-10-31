@@ -1,6 +1,6 @@
 ---
 name: ai-features
-description: Build LLM/AI features that are reliable, affordable and safe - server-side model calls, streaming UX, structured outputs with schema validation, tool use and agents, RAG (chunking, embeddings, pgvector, hybrid search, reranking, citations), prompt versioning, evaluation sets in CI, cost control (budgets, caching, prompt caching, model routing, per-user quotas), latency, fallbacks across models, prompt-injection defenses, PII handling, and tracing. Use when adding a chatbot, assistant, AI generation, summarization, classification, extraction, semantic search, embeddings, agents or MCP tools to an app; when AI costs spike or answers are wrong or slow; or when the user says AI, LLM, GPT, Claude, chatbot, RAG, embeddings, agent, ذكاء اصطناعي, شات بوت, مساعد ذكي. Ships ai_check.py (client-side keys, missing max tokens/timeouts, raw HTML rendering of model output, user input in system prompts, unrate-limited AI routes, scattered model names).
+description: Load before writing any code that calls an LLM (Claude, OpenAI, Gemini) - chat assistant, streaming answers, AI generation, embeddings, agents. Builds LLM/AI features that are reliable, affordable and safe - server-side model calls, streaming UX, structured outputs with schema validation, tool use and agents, RAG (chunking, embeddings, pgvector, hybrid search, reranking, citations), prompt versioning, evaluation sets in CI, cost control (budgets, caching, prompt caching, model routing, per-user quotas), latency, fallbacks across models, prompt-injection defenses, PII handling, and tracing. Use when adding a chatbot, assistant, AI generation, summarization, classification, extraction, semantic search, embeddings, agents or MCP tools to an app; when AI costs spike or answers are wrong or slow; or when the user says AI, LLM, GPT, Claude, chatbot, RAG, embeddings, agent, ذكاء اصطناعي, شات بوت, مساعد ذكي. Ships ai_check.py.
 ---
 
 # AI Features
@@ -32,6 +32,7 @@ Security of AI features (prompt injection, tool permissions, data leaks) is spec
 1. Spec the feature (`product-spec`): the job, inputs, expected outputs, what a wrong answer costs, latency target, cost per use ceiling.
 2. Build the eval set first: 20–50 real examples with expected properties (`patterns.md` §7).
 3. Implement the thinnest version: one server endpoint, one prompt file, structured output, streaming, timeouts, quota.
+   Every chat/stream endpoint you write shows, in the code itself: `max_tokens` (AI SDK: `maxOutputTokens`), a timeout, the per-user quota/rate-limit check before the call, and the client stop button wired to an abort signal that reaches the provider call.
 4. Run the eval; iterate prompt/retrieval/model until it passes; record cost and latency per call.
 5. Add safety: injection tests (`launch-security` P4), PII redaction, output sanitization, tool permission checks.
 6. Ship behind a flag; trace every call; watch cost, latency, error rate, feedback.

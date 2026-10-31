@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.1 — 2026-10-31
+
+Tuned from the first real eval run (`claude plugin eval`, 9 cases, with vs. without the plugin).
+
+### Fixed
+- 4 of 8 skills didn't fire on natural prompts (accessibility, ai-features, launch-security, ship). Their descriptions now open with a direct trigger ("Load before writing a route handler, upload, webhook…", "شنو أفحص قبل الإطلاق"); all 8 fire.
+- `ai-features` workflow states what every chat/stream endpoint shows in code (max tokens, timeout, quota check, abort reaching the provider); `payments-billing` spells out the webhook handler (raw-body signature, `event.id` unique in the same transaction, fast 200, queue).
+
+### Changed
+- Eval graders now check what builder-kit adds over a plain answer (return focus, magic bytes + random names + signed URLs, `<bdi>` isolation, FK indexes + RLS, transaction + fast ack, contrast ratios) instead of things any answer contains. Mean Δ went from +0.04 to +0.11.
+- `ai-chat-streaming` prompt asks for the code (the empty eval workspace made the agent ask where the app is).
+
 ## 2.1.0 — 2026-10-31
 
 ### Added
