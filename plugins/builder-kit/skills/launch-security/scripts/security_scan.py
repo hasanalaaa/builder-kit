@@ -14,7 +14,9 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "lib"))
+import bk  # noqa: E402
 
 JS = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte")
 PY = (".py",)
@@ -57,7 +59,7 @@ RULES = [
     ("WARN", "04", "plain-http-url", SRC,
      # Local/LAN hosts and URL templates are excluded: devices on the user's own network often have no TLS.
      r"['\"`]http://(?!localhost|127\.|0\.0\.0\.0|\[::1\]|10\.|192\.168\.|172\.(?:1[6-9]|2\d|3[01])\.|169\.254\.|"
-     r"[\w.-]+\.local\b|www\.w3\.org|schemas\.|xmlns|example\.|\$|\{|['\"`])",
+     r"[\w.-]+\.local\b|host\b(?!\.)|www\.w3\.org|schemas\.|xmlns|example\.|\$|\{|['\"`])",
      "plain-HTTP URL; use https://"),
     ("WARN", "07", "xss-sink", JS + TPL + PY,
      r"dangerouslySetInnerHTML|v-html=|\{@html\s|\.innerHTML\s*=|\.outerHTML\s*=|insertAdjacentHTML\(|document\.write\(|"
@@ -160,8 +162,7 @@ def list_files(root):
 
 
 def is_test(rel):
-    n = os.path.basename(rel)
-    return ".test." in n or ".spec." in n or n.startswith("test_") or "__tests__" in rel or f"{os.sep}tests{os.sep}" in rel
+    return bool(re.search(bk.TEST_CODE, rel.replace(os.sep, "/")))
 
 
 def ext_of(rel):
@@ -233,27 +234,13 @@ def run(root):
     return files
 
 
-def print_report(files, cap=30):
-    order = {"ERROR": 0, "WARN": 1}
-    shown = {}
-    for lvl, chk, rule, path, line, msg in sorted(findings, key=lambda f: (order[f[0]], f[1], f[2], f[3], f[4])):
-        shown[rule] = shown.get(rule, 0) + 1
-        if shown[rule] <= cap:
-            print(f"{lvl:5} [{chk:>3}] {rule:30} {path}{':' + str(line) if line else ''}  {msg}")
-    for rule, n in shown.items():
-        if n > cap:
-            print(f"      ... {n - cap} more '{rule}' findings")
-    errors = sum(1 for f in findings if f[0] == "ERROR")
-    print(f"\nScanned {len(files)} files: {errors} ERROR, {len(findings) - errors} WARN")
-    return errors
-
-
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("root", nargs="?", default=".")
     args = p.parse_args()
-    files = run(os.path.abspath(args.root))
-    return 1 if print_report(files) else 0
+    root = os.path.abspath(args.root)
+    files = run(root)
+    return bk.report(findings, "security_scan", root, note=f" ({len(files)} files)")
 
 
 if __name__ == "__main__":

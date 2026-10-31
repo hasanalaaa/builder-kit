@@ -1,0 +1,56 @@
+name: builder-kit gate
+description: Run every builder-kit scanner on your repo and get one SHIP / BLOCKED verdict, a job-summary report and SARIF for code scanning.
+author: Hasan
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  path:
+    description: Project root to scan, relative to the workspace.
+    default: "."
+  only:
+    description: "Comma-separated scanner keys to run (default: every scanner relevant to the project)."
+    default: ""
+  skip:
+    description: Comma-separated scanner keys to skip.
+    default: ""
+  sarif:
+    description: Where to write SARIF (upload it with github/codeql-action/upload-sarif). Empty to skip.
+    default: builder-kit.sarif
+  fail-on-blocked:
+    description: Fail the step when the verdict is BLOCKED.
+    default: "true"
+
+outputs:
+  verdict:
+    description: SHIP or BLOCKED.
+    value: ${{ steps.gate.outputs.verdict }}
+  sarif:
+    description: Path of the SARIF file (empty when disabled).
+    value: ${{ inputs.sarif }}
+
+runs:
+  using: composite
+  steps:
+    - id: gate
+      shell: bash
+      env:
+        BK_PATH: ${{ inputs.path }}
+        BK_ONLY: ${{ inputs.only }}
+        BK_SKIP: ${{ inputs.skip }}
+        BK_SARIF: ${{ inputs.sarif }}
+        BK_FAIL: ${{ inputs.fail-on-blocked }}
+      run: |
+        args=("$BK_PATH" --report "$RUNNER_TEMP/builder-kit-report.md" --json "$RUNNER_TEMP/builder-kit.json")
+        [ -n "$BK_ONLY" ] && args+=(--only "$BK_ONLY")
+        [ -n "$BK_SKIP" ] && args+=(--skip "$BK_SKIP")
+        [ -n "$BK_SARIF" ] && args+=(--sarif "$BK_SARIF")
+        set +e
+        python3 "$GITHUB_ACTION_PATH/plugins/builder-kit/skills/ship/scripts/ship_check.py" "${args[@]}"
+        code=$?
+        set -e
+        cat "$RUNNER_TEMP/builder-kit-report.md" >> "$GITHUB_STEP_SUMMARY" || true
+        verdict=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['verdict'])" "$RUNNER_TEMP/builder-kit.json" 2>/dev/null || echo BLOCKED)
+        echo "verdict=$verdict" >> "$GITHUB_OUTPUT"
+        if [ "$code" -ne 0 ] && [ "$BK_FAIL" = "true" ]; then exit "$code"; fi

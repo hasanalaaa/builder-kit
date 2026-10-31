@@ -10,7 +10,7 @@ builder-kit is a set of specialist skills. This one decides the order and holds 
 | File | Use it for |
 |------|-----------|
 | `references/lifecycle.md` | The stage-by-stage map: which skill, which output, which gate, for new projects, features, launches and rescues; the skill router table |
-| `scripts/ship_check.py` | Run all relevant builder-kit scanners in parallel and print one table and verdict. `--report FILE` writes a Markdown report; `--only` / `--skip` filter; `--with-tests` also runs the project's test command |
+| `scripts/ship_check.py` | Run all relevant builder-kit scanners in parallel and print one table and verdict. `--report FILE` Markdown, `--json FILE` every finding for agents, `--sarif FILE` GitHub code scanning; `--only` / `--skip` filter; `--with-tests` also runs the project's test command (npm/pnpm/yarn/bun `test`, pytest, or `make test`) |
 
 ## 1. Rules
 
@@ -36,7 +36,29 @@ python3 <builder-kit>/skills/ship/scripts/ship_check.py . --report SHIP_REPORT.m
 python3 <builder-kit>/skills/ship/scripts/ship_check.py . --only security,architecture,errors
 python3 <builder-kit>/skills/ship/scripts/ship_check.py . --with-tests           # also runs the project's test script
 ```
-Read each failing scanner's output (the report includes it), fix in severity order, re-run until SHIP.
+Read each failing scanner's output (the report includes it), fix in severity order, re-run until SHIP. For a long list, `--json` gives every finding as `{scanner, level, rule, path, line, message}`: group by rule, fix the root cause once.
+
+### Waivers (false positives and accepted risks)
+
+Fix first. Waive only a finding you have read and can justify, always with the reason next to it:
+- One line: a comment `bk-ignore: <rule> -- <reason>` on the line or the line above (bare `bk-ignore` waives every rule there; avoid it).
+- One file: `bk-ignore-file: <rule> -- <reason>` anywhere in it (fixtures that hold the patterns on purpose).
+- Folders or repo-wide findings: `.builder-kit.json` at the root, `{"ignore": {"<rule>": ["<glob>"]}, "why": {...}}`. Globs are fnmatch (`*` crosses folders); `"."` matches repo-wide findings like `no-changelog`; `"*"` as the rule waives everything under a glob (generated or vendored code only).
+Never waive an ERROR from `security` or `data` without telling the user. The scanners' older per-tool comments (`security-scan: ignore`, `design-lint: ignore`, ...) still work. The edit hook honors the same waivers.
+
+### In CI
+
+The repo root is also a GitHub Action: one step runs the gate, writes the report to the job summary and SARIF for code-scanning annotations.
+```yaml
+permissions: { contents: read, security-events: write }
+steps:
+  - uses: actions/checkout@<sha>
+  - id: gate
+    uses: hasanalaaa/builder-kit@<sha>        # inputs: path, only, skip, sarif, fail-on-blocked
+  - uses: github/codeql-action/upload-sarif@<sha>
+    if: always()
+    with: { sarif_file: "${{ steps.gate.outputs.sarif }}", category: builder-kit }
+```
 
 ## 4. Done when (per mode)
 

@@ -148,7 +148,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "release_check")
+    return bk.report(findings, "release_check", a.root)
 
 
 if __name__ == "__main__":

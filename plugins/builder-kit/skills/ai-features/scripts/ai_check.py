@@ -16,7 +16,7 @@ import bk  # noqa: E402
 
 EXT = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".py", ".vue", ".svelte")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".venv", "venv", "__pycache__", ".turbo"}
-TEST = re.compile(r"(\.test\.|\.spec\.|__tests__|/tests?/|test_\w+\.py$|evals?/)")
+TEST = re.compile(bk.TEST_CODE + r"|evals?/")
 
 PUBLIC_KEY = re.compile(r"(NEXT_PUBLIC|VITE|EXPO_PUBLIC|REACT_APP|NUXT_PUBLIC|PUBLIC)_\w*(OPENAI|ANTHROPIC|CLAUDE|GEMINI|GOOGLE_AI|GROQ|MISTRAL|COHERE|DEEPSEEK|OPENROUTER|XAI)\w*")
 AI_CALL = re.compile(r"(messages\.create|messages\.stream|chat\.completions\.create|responses\.create|completions\.create|generateText|streamText|generateObject|streamObject|generate_content|ChatCompletion\.create)\s*\(")
@@ -98,7 +98,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "ai_check")
+    return bk.report(findings, "ai_check", a.root)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Self-test for ship_check: runs the real scanners on a tiny project. Run: python3 test_ship_check.py"""
+import json
 import os
 import subprocess
 import sys
@@ -35,4 +36,15 @@ if __name__ == "__main__":
             assert "Verdict: BLOCKED" in f.read()
         p = subprocess.run([sys.executable, SHIP, d, "--only", "docs"], capture_output=True, text=True, timeout=120)
         assert "Docs" in p.stdout and "Security" not in p.stdout, p.stdout
+        js, sarif = os.path.join(d, "r.json"), os.path.join(d, "r.sarif")
+        subprocess.run([sys.executable, SHIP, d, "--only", "security,errors", "--json", js, "--sarif", sarif], capture_output=True, timeout=120)
+        with open(js, encoding="utf-8") as f:
+            doc = json.load(f)
+        assert doc["verdict"] == "BLOCKED" and any(x["rule"] == "empty-catch" and x["line"] == 2 for x in doc["findings"]), doc
+        with open(sarif, encoding="utf-8") as f:
+            results = json.load(f)["runs"][0]["results"]
+        assert any(r["ruleId"] == "errors/empty-catch" and r["level"] == "error" for r in results), results
+        make(d, {".builder-kit.json": '{"ignore": {"*": ["app/*"]}}'})
+        p = subprocess.run([sys.executable, SHIP, d, "--only", "security,errors"], capture_output=True, text=True, timeout=120)
+        assert p.returncode == 0 and "SHIP" in p.stdout, p.stdout
     print("selftest OK")

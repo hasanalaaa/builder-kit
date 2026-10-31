@@ -1,0 +1,6 @@
+# Stdlib-only scripts: lint for real defects (undefined names, unused imports, syntax), not style.
+target-version = "py310"
+line-length = 160
+
+[lint]
+select = ["F", "E9"]

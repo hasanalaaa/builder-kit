@@ -11,6 +11,9 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "lib"))
+import bk  # noqa: E402
+
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".venv", "venv", "__pycache__", ".turbo", ".expo"}
 README_SECTIONS = {
     "setup": r"install|setup|getting started|quick ?start|التثبيت|البدء",
@@ -100,11 +103,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    for level, rule, where, msg in sorted(findings, key=lambda f: (f[0] != "ERROR", f[1])):
-        print(f"{level:5} {rule:22} {where}  {msg}")
-    errors = sum(f[0] == "ERROR" for f in findings)
-    print(f"\ndocs_check: {errors} ERROR, {len(findings) - errors} WARN")
-    return 1 if errors else 0
+    return bk.report(findings, "docs_check", a.root)
 
 
 if __name__ == "__main__":

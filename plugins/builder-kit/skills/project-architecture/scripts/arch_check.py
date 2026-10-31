@@ -20,8 +20,10 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 from collections import defaultdict
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "lib"))
+import bk  # noqa: E402
 
 SOURCE_EXT = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte", ".py", ".go", ".rb",
               ".php", ".java", ".kt", ".swift", ".dart", ".rs", ".cs"}
@@ -384,23 +386,6 @@ def run(root, args):
     return files, contents
 
 
-def print_report(files, cap=30):
-    order = {"ERROR": 0, "WARN": 1}
-    shown = {}
-    for level, rule, path, line, msg in sorted(findings, key=lambda x: (order[x[0]], x[1], x[2], x[3])):
-        shown[rule] = shown.get(rule, 0) + 1
-        if shown[rule] <= cap:
-            loc = f"{path}:{line}" if line else path
-            print(f"{level:5} {rule:24} {loc}  {msg}")
-    for rule, n in shown.items():
-        if n > cap:
-            print(f"      ... {n - cap} more '{rule}' findings")
-    errors = sum(1 for f in findings if f[0] == "ERROR")
-    warns = len(findings) - errors
-    print(f"\nScanned {len(files)} source files: {errors} ERROR, {warns} WARN")
-    return errors
-
-
 def print_stats(files, contents):
     loc = sum(1 for f in files for line in contents[f] if line.strip())
     fns = stats.get("functions", 0)
@@ -428,11 +413,12 @@ def main():
     p.add_argument("--max-nesting", type=int, default=3, help="WARN above this block nesting depth (Python)")
     p.add_argument("--stats", action="store_true", help="print size metrics (for before/after comparisons)")
     args = p.parse_args()
-    files, contents = run(os.path.abspath(args.root), args)
-    errors = print_report(files)
+    root = os.path.abspath(args.root)
+    files, contents = run(root, args)
+    code = bk.report(findings, "arch_check", root, note=f" ({len(files)} source files)")
     if args.stats:
         print_stats(files, contents)
-    return 1 if errors else 0
+    return code
 
 
 if __name__ == "__main__":

@@ -14,6 +14,8 @@ PLUGIN = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKILLS = os.path.join(PLUGIN, "skills")
 for d in ("launch-security", "error-handling", "design-system", "accessibility", "i18n-rtl"):
     sys.path.insert(0, os.path.join(SKILLS, d, "scripts"))
+sys.path.insert(0, os.path.join(PLUGIN, "lib"))
+import bk  # noqa: E402
 
 SKIP_PARTS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".venv", "venv", "Pods", ".expo"}
 UI = (".tsx", ".jsx", ".vue", ".svelte", ".astro", ".html", ".css", ".scss")
@@ -79,8 +81,9 @@ def main():
     try:
         with open(path, encoding="utf-8", errors="ignore") as f:
             text = f.read()
-        errors = collect(rel, text, cwd)
-    except Exception as e:  # a broken guardrail must never block the user's work
+        cfg, cache = bk.load_config(cwd), {rel: (text.splitlines(), [m for m in map(bk.INLINE_FILE.search, text.splitlines()) if m])}
+        errors = [e for e in collect(rel, text, cwd) if not bk.waived(cwd, cfg, ("ERROR", e[1], rel, e[2] or 0, e[3]), cache)]
+    except (Exception, SystemExit) as e:  # a broken guardrail (or a broken .builder-kit.json) must never block the user's work
         print(f"builder-kit hook skipped: {type(e).__name__}: {e}", file=sys.stderr)
         return 0
     if not errors:
@@ -89,8 +92,8 @@ def main():
     lines += [f"- [{tool}/{rule}] line {line}: {msg}" for tool, rule, line, msg in errors[:12]]
     if len(errors) > 12:
         lines.append(f"- … {len(errors) - 12} more")
-    lines.append("Fix them now. If one is a false positive, add the tool's ignore comment on that line "
-                 "(e.g. `// security-scan: ignore`, `/* design-lint: ignore */`) with a short reason.")
+    lines.append("Fix them now. If one is a false positive, put `bk-ignore: <rule> -- <reason>` in a comment on that line "
+                 "(or the line above); for a whole folder use .builder-kit.json {\"ignore\": {\"<rule>\": [\"<glob>\"]}}.")
     print("\n".join(lines), file=sys.stderr)
     return 2
 

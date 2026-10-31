@@ -12,6 +12,9 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "lib"))
+import bk  # noqa: E402
+
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "vendor", ".venv", "venv", "__pycache__", "coverage"}
 MONEY = re.compile(r"(price|amount|total|balance|cost|fee|salary|subtotal|tax|payout|refund)", re.I)
 FLOAT = re.compile(r"\b(float\d?|real|double precision|double)\b", re.I)
@@ -235,14 +238,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings, n_sql, n_prisma = run(a.root)
-    counts = collections.Counter()
-    for level, rule, where, msg in sorted(findings, key=lambda f: (f[0] != "ERROR", f[1])):
-        counts[rule] += 1
-        if counts[rule] <= 30:
-            print(f"{level:5} {rule:22} {where}\n      {msg}")
-    errors = sum(f[0] == "ERROR" for f in findings)
-    print(f"\nschema_check: {n_sql} SQL files, {n_prisma} Prisma files · {errors} ERROR, {len(findings) - errors} WARN")
-    return 1 if errors else 0
+    return bk.report(findings, "schema_check", a.root, note=f" ({n_sql} SQL files, {n_prisma} Prisma files)")
 
 
 if __name__ == "__main__":

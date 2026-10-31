@@ -23,7 +23,7 @@ MARKUP = (".tsx", ".jsx", ".html", ".vue", ".svelte", ".astro", ".mdx")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", ".nuxt", ".svelte-kit", ".output", "out", "coverage",
                "vendor", ".turbo", ".vercel", "public", "storybook-static", "__pycache__", ".venv", "venv"}
 TOKEN_FILE = re.compile(r"(tokens?|themes?|globals?|variables|palettes?|colou?rs?)\.(css|scss|ts|js|json)$|tailwind\.config|design-system", re.I)
-TEST_FILE = re.compile(r"(\.test\.|\.spec\.|__tests__|\.stories\.|fixtures?/)")
+TEST_FILE = re.compile(bk.TEST_CODE + r"|\.stories\.|fixtures?/")
 
 HEX = r"#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b"
 EMOJI = re.compile("[\U0001F300-\U0001FAFF✨⭐]")
@@ -169,7 +169,7 @@ def main():
     p.add_argument("--stats", action="store_true", help="print raw value inventory")
     a = p.parse_args()
     findings, stats = run(a.root)
-    return bk.report(findings, "design_lint")
+    return bk.report(findings, "design_lint", a.root)
 
 
 if __name__ == "__main__":

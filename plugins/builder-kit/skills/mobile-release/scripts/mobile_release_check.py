@@ -12,6 +12,9 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "lib"))
+import bk  # noqa: E402
+
 IGNORE_DIRS = {"node_modules", ".git", "build", "dist", "Pods", ".expo", "DerivedData", ".gradle", ".dart_tool"}
 MODULE_KEYS = {
     "expo-camera": ["NSCameraUsageDescription"],
@@ -140,11 +143,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    for level, rule, where, msg in sorted(findings, key=lambda f: (f[0] != "ERROR", f[1])):
-        print(f"{level:5} {rule:26} {where}  {msg}")
-    errors = sum(f[0] == "ERROR" for f in findings)
-    print(f"\nmobile_release_check: {errors} ERROR, {len(findings) - errors} WARN")
-    return 1 if errors else 0
+    return bk.report(findings, "mobile_release_check", a.root)
 
 
 if __name__ == "__main__":

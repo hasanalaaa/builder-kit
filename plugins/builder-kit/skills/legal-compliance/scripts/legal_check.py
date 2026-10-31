@@ -74,7 +74,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "legal_check", note=" (signals only, not legal advice)")
+    return bk.report(findings, "legal_check", a.root, note=" (signals only, not legal advice)")
 
 
 if __name__ == "__main__":

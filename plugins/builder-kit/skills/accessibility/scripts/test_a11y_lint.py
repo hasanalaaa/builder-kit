@@ -34,6 +34,7 @@ GOOD = """<html lang="ar" dir="rtl">
 <iframe src="/map" title="Store location map"></iframe>
 <video src="/v.mp4" autoPlay muted controls></video>
 <button onClick={close} aria-label="Close"><XIcon /></button>
+<div className="scrim" onClick={close} />
 <h1>Title</h1>
 <h2>Section</h2>
 <Pressable onPress={go} accessibilityRole="button" accessibilityLabel="Go"><Text>Go</Text></Pressable>

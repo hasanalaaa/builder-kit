@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/hasanalaaa/builder-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/hasanalaaa/builder-kit/actions/workflows/ci.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A Claude Code plugin that builds websites, web apps, mobile apps and AI-built ("vibe-coded") products the way senior teams do: from idea to launch and operation. It ships 26 skills, 25+ tested tools, one quality gate, an edit-time guardrail hook, commands and reviewer agents.
+A Claude Code plugin that builds websites, web apps, mobile apps and AI-built ("vibe-coded") products the way senior teams do: from idea to launch and operation. It ships 26 skills, 25+ tested tools, one quality gate (also a GitHub Action with SARIF), an edit-time guardrail hook, commands, reviewer agents and a behavioral eval suite.
 
 ## Skills
 
@@ -46,6 +46,39 @@ A Claude Code plugin that builds websites, web apps, mobile apps and AI-built ("
   - `builder-reviewer` reviews a diff against every standard.
   - `ui-reviewer` scores rendered UI with the design rubric.
 
+## Use the gate in any repo's CI
+
+The repo root is a GitHub Action. It runs every relevant scanner, writes the report to the job summary, and emits SARIF so findings show up as code-scanning annotations on the diff.
+
+```yaml
+permissions: { contents: read, security-events: write }
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - id: gate
+        uses: hasanalaaa/builder-kit@main   # pin a commit SHA in production
+        with:
+          skip: seo                          # optional: path, only, skip, sarif, fail-on-blocked
+      - uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with: { sarif_file: "${{ steps.gate.outputs.sarif }}", category: builder-kit }
+```
+Locally: `python3 plugins/builder-kit/skills/ship/scripts/ship_check.py <repo> [--report F.md] [--json F.json] [--sarif F.sarif] [--with-tests]`.
+
+## Configuration
+
+| Setting | Where | Effect |
+|---------|-------|--------|
+| `bk-ignore: <rule> -- <reason>` | comment on (or above) a line | waives that rule on that line, in every scanner and the hook |
+| `bk-ignore-file: <rule> -- <reason>` | comment anywhere in a file | waives that rule for the whole file (fixtures) |
+| `.builder-kit.json` | repo root | `{"ignore": {"<rule>\|*": ["<glob>"]}, "why": {...}}`; `"."` matches repo-wide findings |
+| `BUILDER_KIT_HOOKS=off` | env | turns the edit hook off |
+| `BUILDER_KIT_FORMAT=json` | env | scanners print one JSON finding per line (`ship_check` sets it for its scanners) |
+
+A broken `.builder-kit.json` stops the scan with an error instead of silently waiving nothing; the hook never blocks an edit because of it.
+
 ## Install
 
 From GitHub:
@@ -67,16 +100,27 @@ plugins/builder-kit/
   commands/*.md                      # slash commands
   agents/*.md                        # reviewer agents
   hooks/hooks.json, post_edit.py     # edit-time guardrail
+  lib/bk.py                          # shared: file walk, waivers, report (text or JSON)
+  tests/test_integrity.py            # cross-checks skills, references, commands, agents, gate registry
+  evals/<case>/                      # claude plugin eval suite
+action.yml                           # GitHub Action wrapping ship_check
 ```
 
 ## Tests
 
-Every tool has a stdlib-only self-test. Run all of them:
+```bash
+make test    # every stdlib self-test: scanners, hook, shared lib, plugin integrity (skills, refs, gate registry)
+make lint    # ruff for real defects, shell syntax, manifest JSON
+make check   # the builder-kit gate on this repo
+```
+
+Behavioral evals live in `plugins/builder-kit/evals/`: each case is a natural prompt (Arabic or English) with graders that check the right skill fired and the answer carries the standard (Arabic fonts and real colour values, money not stored as float, upload validation, idempotent webhooks…). They call the model, so they run on demand:
 
 ```bash
-for t in plugins/builder-kit/skills/*/scripts/test_*.py plugins/builder-kit/hooks/test_*.py; do python3 "$t" || echo "FAIL $t"; done
+cd plugins/builder-kit && claude plugin eval . --runs 2
 ```
+In CI: the `evals` workflow (manual, needs the `ANTHROPIC_API_KEY` secret).
 
 ## Adding a skill
 
-Create `plugins/builder-kit/skills/<name>/SKILL.md` with `name` and `description` frontmatter. Keep long material in `references/` and tools in `scripts/`, each tool with a test. Register any scanner in `skills/ship/scripts/ship_check.py` and `skills/ship/references/lifecycle.md`. Bump the version and run `claude plugin validate plugins/builder-kit`.
+Create `plugins/builder-kit/skills/<name>/SKILL.md` with `name` and `description` frontmatter. Keep long material in `references/` and tools in `scripts/`, each tool with a test. A scanner builds its findings as tuples and ends with `bk.report(findings, "<name>", root)`, which applies waivers and prints text or JSON. Register it in `skills/ship/scripts/ship_check.py` and the scanner table in `skills/ship/references/lifecycle.md` (`make test` fails until both agree). Add an eval case when the skill should fire on a new kind of request. Bump the version and run `claude plugin validate plugins/builder-kit`.

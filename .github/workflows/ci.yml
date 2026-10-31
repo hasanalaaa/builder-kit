@@ -28,22 +28,11 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
-      - name: Run every tool's self-test
-        run: |
-          fail=0
-          for t in plugins/builder-kit/skills/*/scripts/test_*.py plugins/builder-kit/hooks/test_*.py; do
-            if python "$t"; then echo "ok   $t"; else echo "FAIL $t"; fail=1; fi
-          done
-          exit $fail
-      - name: Shell scripts parse
-        run: for s in plugins/builder-kit/skills/*/scripts/*.sh; do bash -n "$s"; done
-      - name: Manifests are valid JSON
-        run: |
-          python -c "import json,sys; [json.load(open(p)) for p in sys.argv[1:]]" \
-            .claude-plugin/marketplace.json plugins/builder-kit/.claude-plugin/plugin.json plugins/builder-kit/hooks/hooks.json
+      - name: Every self-test (scanners, hook, shared lib, plugin integrity)
+        run: make test PYTHON=python
 
-  ship-check:
-    name: builder-kit gate on itself
+  lint:
+    name: lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -51,11 +40,27 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.13"
-      - name: ship_check (must be SHIP)
-        run: python plugins/builder-kit/skills/ship/scripts/ship_check.py . --report SHIP_REPORT.md
-      - name: Report in the job summary
-        if: always()
-        run: test -f SHIP_REPORT.md && cat SHIP_REPORT.md >> "$GITHUB_STEP_SUMMARY" || true
+      - name: ruff, shell syntax, manifest JSON
+        run: make lint PYTHON=python RUFF="pipx run ruff==0.17.3"
+
+  ship-check:
+    name: builder-kit gate on itself
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Run the gate through this repo's own action (must be SHIP)
+        id: gate
+        uses: ./
+      - name: Upload findings to code scanning
+        if: always() && steps.gate.outputs.sarif != '' && github.event_name != 'pull_request'
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          sarif_file: ${{ steps.gate.outputs.sarif }}
+          category: builder-kit
 
   validate:
     name: claude plugin validate

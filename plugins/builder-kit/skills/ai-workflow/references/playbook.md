@@ -10,7 +10,7 @@
 - Structure: see ARCHITECTURE.md (features in src/features/<name>, each with index.ts front door)
 - Design: DESIGN.md (tokens in src/styles/tokens.css; Arabic-first RTL)
 - Published contracts: /api/v1/* (mobile app v1.2+ depends on it), Supabase schema, Stripe webhooks
-- Known traps: middleware.ts must stay edge-compatible; dates stored UTC, displayed Asia/Riyadh
+- Known traps: proxy.ts (Next.js 16's renamed middleware.ts) runs on every request, so keep it light; dates stored UTC, displayed Asia/Riyadh
 - Never touch: supabase/migrations already applied, .env*, generated types in src/types/db.ts (run pnpm db:types)
 - Standards: builder-kit skills (launch-security, project-architecture, design-system…); run ship-check before merge
 ```

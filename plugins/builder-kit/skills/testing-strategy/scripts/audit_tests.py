@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 import bk  # noqa: E402
 
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".venv", "venv", "__pycache__", ".turbo"}
-TEST = re.compile(r"(\.test\.|\.spec\.|(^|/)__tests__/|(^|/)tests?/|(^|/)test_[\w]+\.py$|_test\.(py|go)$|Tests?\.swift$|e2e/)")
+TEST = re.compile(bk.TEST_CODE)
 CODE = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".py", ".go", ".swift", ".kt", ".dart")
 FOCUSED = re.compile(r"\b(it|test|describe|context)\.only\(|\b(fit|fdescribe)\(|@pytest\.mark\.only|test\.describe\.only\(")
 SKIPPED = re.compile(r"\b(it|test|describe)\.(skip|todo)\(|\b(xit|xdescribe|xtest)\(|@pytest\.mark\.skip\b|@unittest\.skip|t\.Skip\(")
@@ -51,8 +51,10 @@ def has_test_script(root, files):
                 return True
         except json.JSONDecodeError:
             pass  # invalid package.json: treat as no scripts
-    return any(re.search(r"(^|/)(pytest\.ini|conftest\.py|vitest\.config|jest\.config|playwright\.config|go\.mod|Package\.swift)", f) for f in files) \
-        or "[tool.pytest" in read(root, "pyproject.toml")
+    return any(re.search(r"(^|/)(pytest\.ini|conftest\.py|vitest\.config|jest\.config|playwright\.config|go\.mod|Package\.swift"
+                         r"|Cargo\.toml|build\.gradle(\.kts)?|pubspec\.yaml)", f) for f in files) \
+        or "[tool.pytest" in read(root, "pyproject.toml") \
+        or any(re.search(r"(?m)^test\s*:", read(root, f)) for f in ("Makefile", "justfile"))
 
 
 def module_dirs(root, files, explicit):
@@ -72,7 +74,7 @@ def run(root, modules=None):
     if not tests:
         findings.append(("ERROR", "no-tests", ".", 0, "No test files found: start with one integration test of the main flow (testing-strategy §2)"))
     if not has_test_script(root, files):
-        findings.append(("WARN", "no-test-script", ".", 0, "No test command/config found (package.json \"test\", pytest config, vitest/jest/playwright config)"))
+        findings.append(("WARN", "no-test-script", ".", 0, "No test command/config found (package.json \"test\", a Makefile/justfile test target, pytest config, vitest/jest/playwright config)"))
     test_text = {}
     for rel in tests:
         text = test_text[rel] = read(root, rel)
@@ -103,7 +105,7 @@ def main():
     p.add_argument("--modules", help="directory whose subfolders are feature modules")
     a = p.parse_args()
     findings, n = run(a.root, a.modules)
-    return bk.report(findings, "audit_tests", note=f" ({n} test files)")
+    return bk.report(findings, "audit_tests", a.root, note=f" ({n} test files)")
 
 
 if __name__ == "__main__":

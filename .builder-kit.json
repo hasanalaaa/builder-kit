@@ -1,0 +1,16 @@
+{
+  "ignore": {
+    "xss-sink": ["plugins/builder-kit/skills/ai-features/scripts/*"],
+    "ai-key-public": ["plugins/builder-kit/skills/ai-features/scripts/test_*"],
+    "raw-model-html": ["plugins/builder-kit/skills/ai-features/scripts/test_*"],
+    "system-prompt-interp": ["plugins/builder-kit/skills/ai-features/scripts/test_*"],
+    "ci-no-build": [".github/workflows/ci.yml"],
+    "ci-no-typecheck": [".github/workflows/ci.yml"],
+    "no-runbooks": ["."]
+  },
+  "why": {
+    "xss-sink, ai-*, raw-model-html, system-prompt-interp": "the AI scanner and its test hold the very patterns it detects",
+    "ci-no-build, ci-no-typecheck": "stdlib Python scripts: nothing to build, no type checker in use",
+    "no-runbooks": "a plugin, not a deployed service: no deploy, restore or key rotation to run"
+  }
+}

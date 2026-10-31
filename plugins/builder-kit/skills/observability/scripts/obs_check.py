@@ -18,7 +18,7 @@ import bk  # noqa: E402
 
 CODE = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".py")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".venv", "venv", "__pycache__", ".turbo", ".expo"}
-TEST = re.compile(r"(\.test\.|\.spec\.|__tests__|/tests?/|test_\w+\.py$|scripts?/|seed|mocks?/|fixtures?/|e2e/)")
+TEST = re.compile(bk.TEST_CODE + r"|scripts?/|seed|mocks?/|fixtures?/")
 SERVER = re.compile(r"(^|/)(app/api/|pages/api/|server/|api/|routes?/|actions?/|workers?/|jobs?/|lib/server|services?/)|(server|worker|main|app|manage)\.(ts|js|py)$|route\.(ts|js)$|actions?\.(ts|js)$")
 TRACKERS = ("@sentry/", "sentry_sdk", "sentry-sdk", "@bugsnag/", "bugsnag", "rollbar", "@highlight-run/", "@datadog/browser-rum", "dd-trace",
             "newrelic", "@honeybadger-io/", "posthog-node", "@opentelemetry/", "crashlytics", "elastic-apm")
@@ -105,7 +105,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "obs_check")
+    return bk.report(findings, "obs_check", a.root)
 
 
 if __name__ == "__main__":

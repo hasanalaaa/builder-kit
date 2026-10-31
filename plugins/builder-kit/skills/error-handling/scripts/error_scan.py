@@ -16,7 +16,7 @@ import bk  # noqa: E402
 CODE_EXT = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".py", ".go", ".swift", ".kt", ".dart")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".venv", "venv",
                "__pycache__", ".turbo", "Pods", ".expo", "android/build", "ios/build"}
-TEST = re.compile(r"(\.test\.|\.spec\.|__tests__|/tests?/|test_[\w]+\.py$|_test\.(go|py)$)")
+TEST = re.compile(bk.TEST_CODE)
 
 JS = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs")
 RULES = [
@@ -128,7 +128,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "error_scan")
+    return bk.report(findings, "error_scan", a.root)
 
 
 if __name__ == "__main__":

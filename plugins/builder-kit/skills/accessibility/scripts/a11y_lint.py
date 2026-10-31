@@ -16,7 +16,7 @@ import bk  # noqa: E402
 
 EXT = (".tsx", ".jsx", ".html", ".vue", ".svelte", ".astro", ".mdx")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".turbo", ".expo", "public"}
-TEST = re.compile(r"(\.test\.|\.spec\.|__tests__|\.stories\.|e2e/)")
+TEST = re.compile(bk.TEST_CODE + r"|\.stories\.")
 
 TAG = re.compile(r"<([A-Za-z][\w.]*)((?:\s+(?:[^<>\"'{}]|\"[^\"]*\"|'[^']*'|\{(?:[^{}]|\{[^{}]*\})*\})*?)?)\s*(/?)>", re.S)
 SPREAD = re.compile(r"\{\s*\.\.\.")
@@ -53,7 +53,9 @@ def element_checks(rel, text, findings):
                 before = text[max(0, m.start() - 300): m.start()]
                 if not re.search(r"<label\b(?![^>]*>[^<]*</label>)[^>]*>(?:(?!</label>).)*$", before, re.S):
                     add("WARN", "input-label", f"<{name}> without an associated label (label for=id, wrapping label, or aria-label)")
-        if low in ("div", "span", "li", "p", "img", "section") and re.search(r"(?<![\w-])on[Cc]lick\s*=", a) and not has(a, "role"):
+        # A scrim/backdrop click is a pointer shortcut for a dialog that Escape and its close button already handle.
+        backdrop = re.search(r"class(?:Name)?\s*=\s*[{\"'`][^>]*?\b(?:scrim|backdrop|overlay)\b", a) or has(a, "aria-hidden")
+        if low in ("div", "span", "li", "p", "img", "section") and re.search(r"(?<![\w-])on[Cc]lick\s*=", a) and not has(a, "role") and not backdrop:
             add("ERROR", "click-non-interactive", f"onClick on <{name}> without role/keyboard support: use <button> or <a href>")
         if low == "a" and not has(a, "href"):
             add("ERROR", "anchor-no-href", "<a> without href is not keyboard-focusable: use <button> for actions")
@@ -118,7 +120,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "a11y_lint", note=" (static checks only: also run axe + keyboard + screen reader)")
+    return bk.report(findings, "a11y_lint", a.root, note=" (static checks only: also run axe + keyboard + screen reader)")
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ import bk  # noqa: E402
 EXT = (".css", ".scss", ".sass", ".less", ".tsx", ".jsx", ".ts", ".js", ".vue", ".svelte", ".astro", ".html", ".dart")
 MARKUP = (".tsx", ".jsx", ".vue", ".svelte", ".astro")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".turbo", ".expo", "public", "ios", "android"}
-TEST = re.compile(r"(\.test\.|\.spec\.|__tests__|\.stories\.|e2e/|\.d\.ts$)")
+TEST = re.compile(bk.TEST_CODE + r"|\.stories\.|\.d\.ts$")
 
 CSS_PHYSICAL = re.compile(r"(?<![\w-])(margin-left|margin-right|padding-left|padding-right|border-left|border-right|"
                           r"border-top-left-radius|border-top-right-radius|border-bottom-left-radius|border-bottom-right-radius)\s*:"
@@ -112,7 +112,7 @@ def main():
     p.add_argument("--strings", action="store_true")
     a = p.parse_args()
     findings = run(a.root, a.strings)
-    return bk.report(findings, "rtl_lint")
+    return bk.report(findings, "rtl_lint", a.root)
 
 
 if __name__ == "__main__":

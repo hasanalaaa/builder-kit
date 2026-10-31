@@ -20,6 +20,7 @@ def run_on(files, modules=None):
 
 if __name__ == "__main__":
     assert {"no-tests", "no-test-script"} <= run_on({"src/features/billing/index.ts": "export const x = 1\n"})
+    assert "no-test-script" not in run_on({"Makefile": "test:\n\tpython3 test_a.py\n", "test_a.py": "assert 1 + 1 == 2\n"})
     bad = {
         "package.json": '{"scripts": {"test": "vitest"}}',
         "src/features/billing/index.ts": "export const x = 1\n",

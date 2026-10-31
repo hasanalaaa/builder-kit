@@ -15,7 +15,7 @@ import bk  # noqa: E402
 
 EXT = (".tsx", ".jsx", ".ts", ".js", ".vue", ".svelte")
 IGNORE_DIRS = {"node_modules", ".git", "dist", "build", ".next", "out", "coverage", "vendor", ".turbo", ".expo", "public"}
-TEST = re.compile(r"(\.test\.|\.spec\.|__tests__|\.stories\.|e2e/|\.d\.ts$|\.config\.)")
+TEST = re.compile(bk.TEST_CODE + r"|\.stories\.|\.d\.ts$|\.config\.")
 
 EFFECT_SET = re.compile(r"useEffect\(\s*\(\s*\)\s*=>\s*\{?\s*set[A-Z]\w*\(")
 EFFECT_FETCH = re.compile(r"useEffect\(\s*\(\s*\)\s*=>\s*\{[^}]{0,200}?\b(fetch\(|axios\.|\.get\(|supabase\.from\()", re.S)
@@ -93,7 +93,7 @@ def main():
     p.add_argument("root", nargs="?", default=".")
     a = p.parse_args()
     findings = run(a.root)
-    return bk.report(findings, "fe_check")
+    return bk.report(findings, "fe_check", a.root)
 
 
 if __name__ == "__main__":

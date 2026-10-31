@@ -25,7 +25,7 @@ Goal: the server proves who the user is on every request. A login screen or hidd
 
 **Verify:** for every protected endpoint, a credential-less curl that must return 401, and one that reads another user's resource and must return 403/404.
 
-**Watch out:** middleware alone is not enough (a 2025 Next.js flaw let attackers skip middleware entirely). Next.js server actions are public endpoints; each needs its own check. Don't roll your own auth.
+**Watch out:** middleware (`proxy.ts` since Next.js 16) alone is not enough (a 2025 Next.js flaw let attackers skip middleware entirely). Next.js server actions are public endpoints; each needs its own check. Don't roll your own auth.
 
 **Done when**
 - [ ] Every protected endpoint returns 401 without a valid session.

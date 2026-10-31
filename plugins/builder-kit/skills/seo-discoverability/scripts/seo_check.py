@@ -16,6 +16,9 @@ import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "lib"))
+import bk  # noqa: E402
+
 UA = "Mozilla/5.0 (compatible; builder-kit-seo-check/1.0)"
 
 
@@ -174,14 +177,8 @@ def main():
     p.add_argument("targets", nargs="+", help="build folder(s) or URL(s)")
     a = p.parse_args()
     findings = run(a.targets)
-    counts = collections.Counter()
-    for level, rule, where, msg in sorted(findings, key=lambda f: (f[0] != "ERROR", f[1], f[2])):
-        counts[rule] += 1
-        if counts[rule] <= 30:
-            print(f"{level:5} {rule:20} {where}  {msg}")
-    errors = sum(f[0] == "ERROR" for f in findings)
-    print(f"\nseo_check: {errors} ERROR, {len(findings) - errors} WARN")
-    return 1 if errors else 0
+    local = [t for t in a.targets if not t.startswith(("http://", "https://"))]
+    return bk.report(findings, "seo_check", local[0] if len(local) == 1 else None)
 
 
 if __name__ == "__main__":

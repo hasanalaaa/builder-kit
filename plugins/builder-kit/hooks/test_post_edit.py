@@ -41,4 +41,13 @@ if __name__ == "__main__":
         assert run_hook(d, os.path.join(d, "missing.ts"))[0] == 0
         nm = write(d, "node_modules/x/index.ts", "try { x() } catch (e) {}\n")
         assert run_hook(d, nm)[0] == 0
+        waived = write(d, "app/w.tsx", '<img src="/a.png"> {/* bk-ignore: img-alt -- decorative, alt set by CMS */}\n')
+        assert run_hook(d, waived)[0] == 0
+        wrong_rule = write(d, "app/w2.tsx", '<img src="/a.png"> {/* bk-ignore: gradient-text */}\n')
+        assert run_hook(d, wrong_rule)[0] == 2
+        write(d, ".builder-kit.json", '{"ignore": {"empty-catch": ["legacy/*"]}}')
+        legacy = write(d, "legacy/old/a.ts", "try { x() } catch (e) {}\n")
+        assert run_hook(d, legacy)[0] == 0
+        write(d, ".builder-kit.json", "{broken")
+        assert run_hook(d, legacy)[0] == 0  # a broken config never blocks an edit
     print("selftest OK")
