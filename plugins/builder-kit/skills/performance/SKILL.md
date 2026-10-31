@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Make websites, web apps, APIs and mobile apps fast and keep them fast - Core Web Vitals (LCP, INP, CLS) with field data, images and fonts, JavaScript weight and code splitting, rendering strategy (static, ISR, SSR, streaming, islands), caching and CDN, server and database latency, third-party scripts, mobile startup time and frame rate, and performance budgets enforced in CI. Use when a page or app is slow, scores badly in Lighthouse/PageSpeed, before launch, when adding heavy dependencies, images or third-party scripts, or when the user says performance, slow, speed, Core Web Vitals, Lighthouse, bundle size, الأداء, الموقع بطيء, سرعة التطبيق. Ships perf_budget.py (built JS/CSS sizes with gzip, largest chunks, heavy dependencies, oversized images and fonts).
+description: Load when something is slow, before launch, or when adding heavy dependencies, images or third-party scripts. Core Web Vitals, images/fonts, JS weight, rendering and caching, DB latency, mobile startup, budgets in CI. Triggers: slow, Lighthouse, الموقع بطيء.
 ---
 
 # Performance

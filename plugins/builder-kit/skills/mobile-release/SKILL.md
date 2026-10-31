@@ -1,6 +1,6 @@
 ---
 name: mobile-release
-description: Ship iOS and Android apps (Expo/React Native, Flutter, SwiftUI, Kotlin) through the App Store and Google Play without surprises - app identity and versioning, signing, EAS Build/Submit, TestFlight and Play testing tracks, store listings and screenshots (Arabic + English), permissions and usage strings, privacy manifests and nutrition labels/Data safety, review guideline traps and how to avoid rejections, OTA updates within store rules, phased rollouts, forced updates, deep links, push setup, crash monitoring and post-release checks. Use when preparing a first submission, a release, an update, after a rejection, or when the user says App Store, Google Play, TestFlight, EAS, release the app, publish the app, رفع التطبيق, نشر التطبيق على المتجر, رفض أبل. Ships mobile_release_check.py (Expo/native config: identifiers, versions, icons, permission strings for installed modules, privacy manifest, risky Android permissions, Sign in with Apple, EAS profiles, updates runtime version).
+description: Load before an App Store or Google Play submission, update or after a rejection. Identity, signing, EAS, TestFlight/Play tracks, permissions, privacy manifest, review traps, OTA, rollouts. Triggers: App Store, Google Play, TestFlight, رفع التطبيق, رفض أبل.
 ---
 
 # Mobile Release

@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.0 — 2026-10-31
+
+### Added
+- **Stop gate** (`hooks/stop_gate.py`): Claude can't end its turn while files it changed this session still have blocking findings. Uses the edit hook's scanners and waivers, ignores changes made before the session, blocks at most once per stop, costs no tokens when the code is clean. Works even when no skill fired.
+- **Build-task evals** (`build-avatar-upload`, `build-stripe-webhook`): a scaffolded repo, Claude writes the real file, graders read the file. First run: with the plugin 1.00 / 1.00, without 0.80 / 0.86 (missed magic-byte checks on uploads and `event.id` dedupe on webhooks: XSS and double credits).
+
+### Changed
+- **Always-on cost 8,891 → 3,582 tokens per session (−60%)**: every skill and agent description rewritten to ~250 chars, trigger first, Arabic and English trigger words kept.
+- On-invoke cost: launch-security 7.9k → 6.3k (AUDIT workflow moved to `references/audit-workflow.md`), project-architecture 6.7k → 5.8k (NEW/UNTANGLE/SIMPLIFY moved to `references/workflows.md`). The rules used on every edit stay in SKILL.md.
+- `post_edit.py` exposes `blocking_errors()` and `describe()` shared with the Stop gate.
+
 ## 2.1.1 — 2026-10-31
 
 Tuned from the first real eval run (`claude plugin eval`, 9 cases, with vs. without the plugin).

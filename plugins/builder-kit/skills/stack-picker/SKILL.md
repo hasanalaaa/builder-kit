@@ -1,6 +1,6 @@
 ---
 name: stack-picker
-description: Choose the technology stack, hosting, database, auth, payments, email, storage and AI providers for a new app, site, API, mobile or desktop project - boring, proven, AI-friendly defaults with the reasoning written down as an ADR. Use when starting a project, when the user asks "what should I build this with", compares frameworks or providers (Next.js vs Astro, Supabase vs Firebase, Expo vs Flutter vs native, Tauri vs Electron, Vercel vs Cloudflare), or plans a migration. Also for اختيار التقنية, أي إطار عمل, أي استضافة, ستاك المشروع.
+description: Load when choosing a stack, host, database, auth, payments, email or AI provider for a new project, or comparing frameworks. Boring, AI-friendly defaults with an ADR. Triggers: what should I build this with, Next.js vs, Supabase vs Firebase, أي إطار عمل.
 ---
 
 # Stack Picker

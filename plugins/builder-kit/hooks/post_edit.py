@@ -63,8 +63,37 @@ def collect(rel, text, cwd):
     return errors
 
 
+def hooks_off():
+    return os.environ.get("BUILDER_KIT_HOOKS", "on").lower() in ("off", "0", "false", "no")
+
+
+def blocking_errors(path, cwd):
+    """(rel, unwaived ERROR findings) for one file, or None when the file is out of scope."""
+    if not os.path.isfile(path) or os.path.getsize(path) > MAX_BYTES:
+        return None
+    rel = os.path.relpath(path, cwd) if os.path.abspath(path).startswith(os.path.abspath(cwd) + os.sep) else os.path.basename(path)
+    if set(rel.split(os.sep)) & SKIP_PARTS:
+        return None
+    with open(path, encoding="utf-8", errors="ignore") as f:
+        text = f.read()
+    cfg, cache = bk.load_config(cwd), {rel: (text.splitlines(), [m for m in map(bk.INLINE_FILE.search, text.splitlines()) if m])}
+    return rel, [e for e in collect(rel, text, cwd) if not bk.waived(cwd, cfg, ("ERROR", e[1], rel, e[2] or 0, e[3]), cache)]
+
+
+def describe(rel, errors, limit=12):
+    lines = [f"{rel}: {len(errors)} blocking issue(s)"]
+    lines += [f"- [{tool}/{rule}] line {line}: {msg}" for tool, rule, line, msg in errors[:limit]]
+    if len(errors) > limit:
+        lines.append(f"- … {len(errors) - limit} more")
+    return lines
+
+
+WAIVER_HINT = ("If one is a false positive, put `bk-ignore: <rule> -- <reason>` in a comment on that line "
+               "(or the line above); for a whole folder use .builder-kit.json {\"ignore\": {\"<rule>\": [\"<glob>\"]}}.")
+
+
 def main():
-    if os.environ.get("BUILDER_KIT_HOOKS", "on").lower() in ("off", "0", "false", "no"):
+    if hooks_off():
         return 0
     try:
         data = json.load(sys.stdin)
@@ -73,28 +102,16 @@ def main():
     tool_input = data.get("tool_input") or {}
     path = tool_input.get("file_path") or tool_input.get("notebook_path")
     cwd = data.get("cwd") or os.getcwd()
-    if not path or not os.path.isfile(path) or os.path.getsize(path) > MAX_BYTES:
-        return 0
-    rel = os.path.relpath(path, cwd) if os.path.abspath(path).startswith(os.path.abspath(cwd) + os.sep) else os.path.basename(path)
-    if set(rel.split(os.sep)) & SKIP_PARTS:
+    if not path:
         return 0
     try:
-        with open(path, encoding="utf-8", errors="ignore") as f:
-            text = f.read()
-        cfg, cache = bk.load_config(cwd), {rel: (text.splitlines(), [m for m in map(bk.INLINE_FILE.search, text.splitlines()) if m])}
-        errors = [e for e in collect(rel, text, cwd) if not bk.waived(cwd, cfg, ("ERROR", e[1], rel, e[2] or 0, e[3]), cache)]
+        result = blocking_errors(path, cwd)
     except (Exception, SystemExit) as e:  # a broken guardrail (or a broken .builder-kit.json) must never block the user's work
         print(f"builder-kit hook skipped: {type(e).__name__}: {e}", file=sys.stderr)
         return 0
-    if not errors:
+    if not result or not result[1]:
         return 0
-    lines = [f"builder-kit found {len(errors)} blocking issue(s) in {rel}:"]
-    lines += [f"- [{tool}/{rule}] line {line}: {msg}" for tool, rule, line, msg in errors[:12]]
-    if len(errors) > 12:
-        lines.append(f"- … {len(errors) - 12} more")
-    lines.append("Fix them now. If one is a false positive, put `bk-ignore: <rule> -- <reason>` in a comment on that line "
-                 "(or the line above); for a whole folder use .builder-kit.json {\"ignore\": {\"<rule>\": [\"<glob>\"]}}.")
-    print("\n".join(lines), file=sys.stderr)
+    print("\n".join(["builder-kit found blocking issues:"] + describe(*result) + ["Fix them now. " + WAIVER_HINT]), file=sys.stderr)
     return 2
 
 

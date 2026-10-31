@@ -1,6 +1,6 @@
 ---
 name: email-notifications
-description: Send transactional email, marketing email, push notifications, SMS/WhatsApp and in-app notifications that arrive, render correctly (including Arabic RTL), respect preferences and laws - domain authentication (SPF, DKIM, DMARC, BIMI), sending subdomains, providers (Resend, Postmark, SES), templates (React Email, MJML), one-click unsubscribe, bounce/complaint handling, queues/outbox, push via APNs/FCM/Expo, OTP via SMS/WhatsApp, notification preferences and quiet hours. Use when adding sign-up/verification/reset emails, receipts, alerts, newsletters, push or SMS, when emails land in spam, or when the user says email, notifications, push, SMS, WhatsApp, إشعارات, رسائل البريد, الإيميلات تروح سبام. Ships check-email-dns.sh.
+description: Load before adding email, push, SMS/WhatsApp or in-app notifications, or when email lands in spam. SPF/DKIM/DMARC, providers, RTL templates, unsubscribe, queues, OTP, preferences. Triggers: email, push, SMS, إشعارات, الإيميلات تروح سبام.
 ---
 
 # Email and Notifications

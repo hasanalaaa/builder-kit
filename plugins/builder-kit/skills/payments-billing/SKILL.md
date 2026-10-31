@@ -1,6 +1,6 @@
 ---
 name: payments-billing
-description: Take money correctly - one-off payments, subscriptions, trials, plans and entitlements, upgrades/downgrades with proration, coupons, taxes/VAT, invoices and receipts, failed payments and dunning, refunds and disputes, marketplaces/payouts, regional methods (Apple Pay, Google Pay, mada, STC Pay, BNPL like Tabby/Tamara) and in-app purchases (StoreKit 2, Google Play Billing, RevenueCat) - with server-side pricing, verified idempotent webhooks as the source of truth, reconciliation and test clocks. Use when adding checkout, pricing, plans, paywalls, subscriptions, credits, or anything that charges users; when integrating Stripe, Paddle, Lemon Squeezy, Moyasar, Tap, HyperPay, Checkout.com, RevenueCat; or when the user says payments, billing, subscription, checkout, الدفع, الاشتراكات, بوابة دفع, باقات.
+description: Load before adding checkout, pricing, plans, subscriptions, credits or anything that charges users, and for payment bugs. Server-side prices, verified idempotent webhooks, entitlements, dunning, refunds, mada/Tabby/Tamara, in-app purchases. Triggers: Stripe, الدفع, الاشتراكات.
 ---
 
 # Payments and Billing

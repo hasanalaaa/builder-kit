@@ -1,6 +1,6 @@
 ---
 name: api-contracts
-description: Design consistent, versioned, documented APIs and server actions - resource naming, HTTP methods and status codes, one error format (RFC 9457 problem details), validation at the boundary, pagination, filtering, idempotency keys, rate-limit headers, versioning and deprecation, OpenAPI from code, typed clients, outbound webhooks, and server actions/tRPC/GraphQL equivalents. Use when adding or changing an endpoint, route handler, server action, RPC, GraphQL schema, webhook, SDK or any interface another app or the front end consumes; when the user mentions API design, REST, endpoints, OpenAPI, Swagger, breaking change, versioning; or تصميم API, نقاط النهاية, الربط بين الواجهة والسيرفر.
+description: Load before adding or changing an endpoint, route handler, server action, RPC/GraphQL, webhook or SDK. Naming, status codes, RFC 9457 errors, validation, pagination, idempotency, versioning, OpenAPI. Triggers: API, REST, endpoint, breaking change, تصميم API.
 ---
 
 # API Contracts

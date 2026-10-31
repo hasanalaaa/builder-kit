@@ -1,5 +1,5 @@
 {
-  "description": "builder-kit guardrails: after each file edit, run fast builder-kit scanners on that file and send blocking findings back to Claude. Disable with BUILDER_KIT_HOOKS=off.",
+  "description": "builder-kit guardrails: scan each edited file, and block ending a turn while files changed this session have blocking findings. Disable with BUILDER_KIT_HOOKS=off.",
   "hooks": {
     "PostToolUse": [
       {
@@ -9,6 +9,17 @@
             "type": "command",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/post_edit.py\"",
             "timeout": 20
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/stop_gate.py\"",
+            "timeout": 30
           }
         ]
       }

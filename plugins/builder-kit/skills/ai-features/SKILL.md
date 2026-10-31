@@ -1,6 +1,6 @@
 ---
 name: ai-features
-description: Load before writing any code that calls an LLM (Claude, OpenAI, Gemini) - chat assistant, streaming answers, AI generation, embeddings, agents. Builds LLM/AI features that are reliable, affordable and safe - server-side model calls, streaming UX, structured outputs with schema validation, tool use and agents, RAG (chunking, embeddings, pgvector, hybrid search, reranking, citations), prompt versioning, evaluation sets in CI, cost control (budgets, caching, prompt caching, model routing, per-user quotas), latency, fallbacks across models, prompt-injection defenses, PII handling, and tracing. Use when adding a chatbot, assistant, AI generation, summarization, classification, extraction, semantic search, embeddings, agents or MCP tools to an app; when AI costs spike or answers are wrong or slow; or when the user says AI, LLM, GPT, Claude, chatbot, RAG, embeddings, agent, ذكاء اصطناعي, شات بوت, مساعد ذكي. Ships ai_check.py.
+description: Load before writing code that calls an LLM (Claude, OpenAI, Gemini): chat, streaming, generation, extraction, embeddings/RAG, agents, MCP tools. Server-side calls, bounded cost, structured output, evals, prompt-injection defense. Triggers: AI, LLM, chatbot, RAG, agent, ذكاء اصطناعي, شات بوت.
 ---
 
 # AI Features

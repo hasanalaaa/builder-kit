@@ -1,6 +1,6 @@
 ---
 name: error-handling
-description: Make apps fail safely and recover - one error model, typed domain errors, a single error boundary per layer, user-facing messages, timeouts on every network call, retries with exponential backoff and jitter, circuit breakers and fallbacks for third parties, idempotent retries, React/Next.js error boundaries, mobile offline and retry, background job failure handling, and no swallowed errors. Use when writing code that calls a network/API/DB/AI provider, handles user input, runs jobs, or when the app crashes, shows blank screens, "something went wrong", hangs, or loses data; also when reviewing try/catch code. Also معالجة الأخطاء, التطبيق يطيح, شاشة بيضاء, التطبيق يعلق. Ships error_scan.py (empty catches, swallowed errors, missing timeouts, unchecked fetch responses, missing error boundaries).
+description: Load before writing code that calls a network, API, DB or AI provider, runs jobs, or handles user input, and when the app crashes, hangs or shows blank screens. One error model, timeouts, retries with backoff, boundaries, no swallowed errors. Triggers: معالجة الأخطاء, شاشة بيضاء.
 ---
 
 # Error Handling

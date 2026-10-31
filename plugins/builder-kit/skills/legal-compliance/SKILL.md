@@ -1,6 +1,6 @@
 ---
 name: legal-compliance
-description: Product-side compliance for websites and apps - privacy policy, terms of service, cookie/consent banners, data inventory, lawful basis and consent records, user rights (access, export, deletion, correction), account deletion, data retention, processors and DPAs, international transfers, children's data, marketing consent, accessibility statement, AI transparency, and regional laws (GDPR/UK GDPR, CCPA/CPRA, Saudi PDPL, UAE PDPL, other Gulf and Egyptian laws) plus App Store/Google Play privacy requirements. Use before launch, when collecting personal data, adding analytics/cookies/ads, building sign-up or account deletion, entering a new country, or when the user says privacy policy, terms, GDPR, cookies, consent, PDPL, سياسة الخصوصية, الشروط والأحكام, حماية البيانات, الكوكيز. Ships legal_check.py. Not legal advice: flags what to build and what to ask a lawyer.
+description: Load before launch, when collecting personal data, adding analytics/cookies, building sign-up or account deletion. Privacy policy, terms, consent, user rights, retention, GDPR, Saudi/UAE PDPL, store privacy. Triggers: privacy policy, GDPR, سياسة الخصوصية, الكوكيز.
 ---
 
 # Legal and Compliance (product side)

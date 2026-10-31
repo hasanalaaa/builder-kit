@@ -1,6 +1,6 @@
 ---
 name: product-spec
-description: Turn an idea, a vague request or a feature ask into a build-ready spec before any code is written - problem, users, MVP scope, user stories with testable acceptance criteria, flows, data, non-functional targets, risks and vertical slices an AI agent can build one at a time. Use when starting a new app, site or feature, when the request is vague ("build me an app like…", "add a dashboard"), when scope keeps growing, or when the user says spec, PRD, requirements, MVP, user stories, scope, plan the app, فكرة تطبيق, متطلبات, مواصفات, نطاق المشروع, خطة الميزة. Produces SPEC.md (or a feature spec) that the other builder-kit skills build from.
+description: Load before building a new app, site or feature from an idea or vague request. Produces SPEC.md: problem, users, MVP scope, stories with testable acceptance criteria, slices an AI can build one at a time. Triggers: build me an app, MVP, PRD, فكرة تطبيق, مواصفات.
 ---
 
 # Product Spec

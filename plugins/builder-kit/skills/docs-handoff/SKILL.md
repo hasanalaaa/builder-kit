@@ -1,6 +1,6 @@
 ---
 name: docs-handoff
-description: Documentation that lets a new developer, a client or a fresh AI session run, change and operate the project without asking - README (setup in minutes), project CLAUDE.md/AGENTS.md facts, ARCHITECTURE.md and ADR pointers, runbooks for deploy/rollback/incidents/key rotation, onboarding guide, CHANGELOG, API docs, user help docs, and a client handover package (accounts, access, costs, credentials transfer, maintenance plan). Use when finishing a project or milestone, handing over to a client or another developer, onboarding someone, when docs are missing or stale, or when the user says README, documentation, handover, handoff, onboarding, runbook, توثيق, تسليم المشروع, دليل التشغيل. Ships docs_check.py (missing docs, README sections, commands in docs that don't exist, CLAUDE.md facts, stale env docs).
+description: Load when finishing a milestone, handing over to a client or developer, or when docs are missing or stale. README, CLAUDE.md facts, ARCHITECTURE.md, runbooks, CHANGELOG, handover package. Triggers: README, documentation, handover, توثيق, تسليم المشروع.
 ---
 
 # Docs and Handoff

@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Find and fix the real cause of bugs systematically instead of guessing - reproduce, minimize, form and test hypotheses, read the actual error and code, bisect (git bisect run), instrument with logs/debugger/traces, check environment differences, fix the root cause once for all callers, and lock it with a regression test. Covers common web/app bug classes (hydration mismatch, CORS, env vars, caching/stale data, auth/session, timezone, race conditions, N+1/slow queries, memory leaks, build/deploy-only bugs, mobile-only and RTL-only bugs) and production debugging. Use for any bug, crash, error message, wrong output, flaky behavior, "works locally but not in production", or when an AI fix loop isn't converging; also خطأ, مشكلة, باق, التطبيق يطيح, ما يشتغل.
+description: Load for any bug, crash, error message, flaky or wrong behavior, works-locally-not-in-prod, or a fix loop that isn't converging. Reproduce, minimize, hypothesize, bisect, root-cause fix, regression test. Triggers: bug, error, خطأ, مشكلة, ما يشتغل, التطبيق يطيح.
 ---
 
 # Debugging

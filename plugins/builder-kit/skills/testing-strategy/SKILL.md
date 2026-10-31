@@ -1,6 +1,6 @@
 ---
 name: testing-strategy
-description: Decide what to test and how, then prove features work - test pyramid/trophy per stack, unit/integration/E2E/contract/visual/accessibility tests, acceptance criteria to tests, abuse and failure-path tests, fixtures and factories, network mocking (MSW), Playwright E2E, flaky-test control, CI gates and coverage that means something. Use when adding a feature, fixing a bug (write the failing test first), setting up testing in a new project, when tests are missing, flaky or slow, or when the user says test, tests, QA, TDD, coverage, E2E, Playwright, Vitest, Jest, pytest, اختبار, اختبارات, تأكد إنه يشتغل. Ships audit_tests.py (focused/skipped tests, sleeps, empty assertions, untested modules, missing test setup).
+description: Load when adding a feature or fixing a bug (failing test first), setting up tests, or when tests are missing, flaky or slow. Acceptance criteria → tests, levels per stack, Playwright, mocking, CI gates. Triggers: test, QA, E2E, اختبارات.
 ---
 
 # Testing Strategy

@@ -1,6 +1,6 @@
 ---
 name: observability
-description: Know what production is doing - structured logging with request IDs, error tracking (Sentry), metrics and dashboards, tracing (OpenTelemetry), uptime and synthetic checks, alerting that pages for real problems, product analytics events, real-user Web Vitals, mobile crash reporting, log retention and privacy, SLOs, and on-call/incident basics. Use when launching, when bugs are reported that you can't reproduce, when production is slow or failing, when adding analytics, or when the user says logging, monitoring, Sentry, alerts, dashboards, analytics, metrics, tracing, uptime, المراقبة, السجلات, التنبيهات, التحليلات. Ships obs_check.py (error tracker presence, structured logger, console logging in server code, secrets in log calls, request IDs, health endpoint, Web Vitals reporting, analytics consent).
+description: Load when launching, adding logging/analytics, or when production fails in ways you can't reproduce. Structured logs with request IDs, Sentry, metrics, tracing, uptime, alerts, Web Vitals. Triggers: logging, monitoring, Sentry, المراقبة, السجلات.
 ---
 
 # Observability

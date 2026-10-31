@@ -1,6 +1,6 @@
 ---
 name: design-system
-description: Professional UI/UX design for websites, web apps, dashboards, landing pages, mobile (iOS/Android) and desktop apps - choosing a distinct visual direction, building a token-based design system (color, type, spacing, radius, elevation, motion), designing screens and components with every state, Arabic/RTL-first typography, UX copy, critique with scored rubrics, and a final polish pass. Ships a searchable design database (products, styles, palettes, Arabic+Latin fonts, 100+ UX rules, landing and chart guides), a palette generator, a WCAG/APCA contrast checker, and design_lint.py for AI-slop and craft defects. Use for any UI work - design, redesign, build a screen or component, make it beautiful/professional/premium, critique, audit, polish, bolder, quieter, simplify, colors, fonts, typography, spacing, layout, dark mode, animation, empty states, onboarding, UX writing, design tokens, DESIGN.md. Also تصميم, واجهة, شكل الموقع, ألوان, خطوط, تجربة المستخدم, خلّيه احترافي, نظام تصميم.
+description: Load for any UI look-and-feel work: design or redesign a page, screen or component, landing page, colors, fonts, spacing, dark mode, polish or critique. Visual direction, tokens, Arabic/RTL typography, states, design database and contrast tools. Triggers: تصميم, واجهة, ألوان, خطوط, خلّيه احترافي.
 ---
 
 # Design System

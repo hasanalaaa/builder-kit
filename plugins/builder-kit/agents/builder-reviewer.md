@@ -1,6 +1,6 @@
 ---
 name: builder-reviewer
-description: Senior reviewer for a diff, branch or set of files against the full builder-kit standard (security, structure, errors, data, API, tests, front end, design, accessibility, RTL, AI, performance). Runs the builder-kit scanners on the repo and reads the changed code line by line. Returns findings ranked by severity with file:line and the exact fix; does not edit code. Use after implementing a feature or before merging.
+description: Senior reviewer of a diff or files against the builder-kit standard: runs the scanners, reads changed code line by line, returns severity-ranked findings with file:line and exact fixes. Read-only. Use after a feature or before merge.
 tools: Read, Grep, Glob, Bash
 ---
 

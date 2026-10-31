@@ -1,6 +1,6 @@
 ---
 name: data-design
-description: Database and data-model design for any app - schemas, keys, relations, constraints, indexes, money and time types, multi-tenancy, soft delete, audit trails, safe zero-downtime migrations, query performance (N+1, missing indexes, pagination), backups and data lifecycle. Use when creating or changing tables/collections/models, writing migrations, adding a column, designing relations, choosing IDs, seeing slow queries, or planning data for a new feature. Works with Postgres/Supabase, MySQL, SQLite, Prisma, Drizzle, SQLAlchemy, Django ORM. Also for قاعدة البيانات, الجداول, مايقريشن, تصميم البيانات, الاستعلامات بطيئة. Ships schema_check.py that flags missing primary keys, unindexed foreign keys, float money, naive timestamps and unsafe migrations.
+description: Load before creating or changing tables, models, migrations or queries. Keys, constraints, indexes, money/time types, multi-tenancy, RLS, zero-downtime migrations, slow queries. Postgres/Supabase, Prisma, Drizzle, SQLAlchemy. Triggers: schema, migration, قاعدة البيانات, الجداول.
 ---
 
 # Data Design

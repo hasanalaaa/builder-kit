@@ -41,7 +41,10 @@ A Claude Code plugin that builds websites, web apps, mobile apps and AI-built ("
 - `/builder-kit:feature <feature>`: one verified vertical slice.
 - `/builder-kit:ship-check [path]`: every scanner, one verdict, prioritized fixes.
 - `/builder-kit:rescue [path]`: safe takeover of a messy or AI-built project.
-- **Hook** (`PostToolUse` on Write/Edit): scans each edited file with the security, error, design, accessibility and RTL scanners, and sends blocking findings back to Claude. Turn it off with `BUILDER_KIT_HOOKS=off`.
+- **Hooks** (cost no tokens unless they find something):
+  - `PostToolUse` on Write/Edit: scans each edited file with the security, error, design, accessibility and RTL scanners and sends blocking findings back to Claude.
+  - `Stop`: Claude can't end its turn while files it changed this session still have blocking findings (blocks once, never loops; changes made before the session are ignored).
+  - Turn both off with `BUILDER_KIT_HOOKS=off`.
 - **Agents**:
   - `builder-reviewer` reviews a diff against every standard.
   - `ui-reviewer` scores rendered UI with the design rubric.
@@ -99,7 +102,7 @@ plugins/builder-kit/
   skills/<skill>/SKILL.md            # + references/, scripts/ (each script has a test_*.py), data/ (design-system)
   commands/*.md                      # slash commands
   agents/*.md                        # reviewer agents
-  hooks/hooks.json, post_edit.py     # edit-time guardrail
+  hooks/hooks.json, post_edit.py, stop_gate.py   # edit-time guardrail and end-of-turn gate
   lib/bk.py                          # shared: file walk, waivers, report (text or JSON)
   tests/test_integrity.py            # cross-checks skills, references, commands, agents, gate registry
   evals/<case>/                      # claude plugin eval suite

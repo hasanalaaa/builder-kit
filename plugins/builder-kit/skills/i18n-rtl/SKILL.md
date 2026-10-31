@@ -1,6 +1,6 @@
 ---
 name: i18n-rtl
-description: Internationalization and right-to-left (Arabic, Hebrew, Persian, Urdu) done properly for web, React Native/Expo, Flutter, SwiftUI and Android - lang/dir setup, logical CSS properties and Tailwind ms/me/ps/pe/start/end, mirroring rules for icons and layout, bidi isolation for numbers/emails/codes, message catalogs with ICU plurals (Arabic zero/one/two/few/many/other), gender-aware copy, locale-aware dates/numbers/currency/Hijri calendar, Arabic search normalization, translated SEO and store listings, and pseudo-localization tests. Use when the app supports Arabic or any second language, when building layouts that must flip, when text looks broken in RTL, or when adding translations. Also عربي, دعم العربية, اتجاه من اليمين لليسار, RTL, ترجمة, تعدد اللغات. Ships rtl_lint.py (physical CSS/Tailwind/RN properties, missing lang/dir, unflipped directional icons, locale-less date/number formatting, hard-coded UI strings).
+description: Load whenever an app has Arabic or any second language, or a layout must flip. lang/dir, logical CSS and Tailwind ms/me/ps/pe, icon mirroring, bidi isolation, ICU plurals, locale dates/numbers/Hijri, Arabic search. Triggers: RTL, عربي, دعم العربية, ترجمة.
 ---
 
 # i18n and RTL

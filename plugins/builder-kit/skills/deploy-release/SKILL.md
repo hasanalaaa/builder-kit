@@ -1,6 +1,6 @@
 ---
 name: deploy-release
-description: Ship safely and often - environments (local, preview, staging, production) with parity, CI/CD pipelines (GitHub Actions), required checks, preview deployments, secrets and env management, database migrations in the deploy, zero-downtime releases, feature flags, canary/gradual rollout, rollback, versioning and changelogs, Docker and hosting setup (Vercel, Cloudflare, Netlify, Fly, Railway, Render, VPS), domains/DNS/SSL, and the launch-day checklist. Use when setting up CI, deploying for the first time, adding environments, when deploys break production, when "it works locally but not in production", or when the user says deploy, CI/CD, GitHub Actions, pipeline, release, rollback, staging, production, النشر, رفع الموقع, الإطلاق. Ships release_check.py (CI coverage, env var drift vs .env.example, lockfile, runtime pinning, Dockerfile hygiene, health endpoint, migrations in pipeline).
+description: Load when setting up CI/CD, environments, first deploy, rollback, or when production breaks after a deploy. GitHub Actions, previews, secrets, migrations in deploy, flags, rollouts, hosting/DNS. Triggers: deploy, pipeline, release, staging, النشر, رفع الموقع.
 ---
 
 # Deploy and Release

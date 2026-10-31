@@ -1,6 +1,6 @@
 ---
 name: project-rescue
-description: Take over an existing app built quickly with AI tools (Lovable, Bolt, v0, Replit, Cursor, Claude Code) or by someone else, and turn it into a safe, maintainable product without a rewrite - triage with all builder-kit scanners, stop the bleeding (exposed keys, open database, broken auth, payments), stabilize (builds, env, deploy, errors), add a safety net of tests, then untangle structure and improve UX in small shippable steps, with a rescue report for the owner. Use when the user brings an existing project and says it's messy, broken, insecure, slow, "I built this with Lovable/Bolt and now…", take over, audit my app, fix my app, clean up, استلام مشروع, إنقاذ مشروع, تطبيقي خربان, الكود مخربط. Uses ship/scripts/ship_check.py for the triage scan.
+description: Load when taking over an existing, messy or AI-built app (Lovable, Bolt, v0, Replit). Triage scan, stop the bleeding (keys, open DB, auth, payments), stabilize, safety-net tests, untangle in small steps. Triggers: fix my app, استلام مشروع, تطبيقي خربان.
 ---
 
 # Project Rescue

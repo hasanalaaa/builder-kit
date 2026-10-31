@@ -1,6 +1,6 @@
 ---
 name: frontend-quality
-description: Front-end engineering quality for React, Next.js, Vue/Nuxt, Svelte, Astro and React Native - where state lives, data fetching and caching, server vs client components, forms with schema validation, routing and URL state, component design and composition, rendering performance, TypeScript strictness, environment/config, and the defects AI tools leave in UI code (effects that sync derived state, fetch-in-useEffect, index keys, any/ts-ignore, giant client components, leftover console.log, raw img in Next.js). Use when building or reviewing UI code, components, hooks, pages, forms, state management, or when the UI is buggy, janky, re-renders too much or is hard to change. Also كود الواجهة, الفرونت, رياكت, المكونات. Ships fe_check.py.
+description: Load when building or reviewing React, Next.js, Vue, Svelte, Astro or React Native code. State placement, data fetching, server vs client components, forms, TypeScript strictness, AI-left UI defects. Triggers: component, hook, re-renders, كود الواجهة, الفرونت.
 ---
 
 # Front-end Quality

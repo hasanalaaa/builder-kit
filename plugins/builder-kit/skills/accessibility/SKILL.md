@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: Load before writing or fixing any interactive UI - modal/dialog, menu, tabs, form, combobox, custom button, carousel - and whenever asked to make something accessible. Makes websites and apps usable by everyone and compliant with WCAG 2.2 AA (and the European Accessibility Act, ADA, Section 508) - semantic HTML, keyboard access, focus management, screen-reader names and announcements, color contrast, target size, forms and errors, motion, media captions, ARIA patterns for dialogs/menus/tabs/comboboxes, RTL and Arabic screen readers, and native iOS/Android accessibility (VoiceOver, TalkBack, Dynamic Type). Use when building any UI, reviewing for a11y, fixing keyboard or screen-reader issues, preparing for an accessibility audit or legal requirement, or when the user says accessibility, a11y, WCAG, screen reader, keyboard navigation, إمكانية الوصول, ذوي الإعاقة, قارئ الشاشة. Ships a11y_lint.py.
+description: Load before writing or fixing interactive UI (modal, menu, tabs, form, combobox, custom control) or when asked to make it accessible. WCAG 2.2 AA: keyboard, focus, screen readers, ARIA patterns, contrast, native VoiceOver/TalkBack. Triggers: a11y, WCAG, screen reader, إمكانية الوصول, قارئ الشاشة.
 ---
 
 # Accessibility

@@ -1,6 +1,6 @@
 ---
 name: seo-discoverability
-description: Get websites found and shared - technical SEO (crawlability, rendering, status codes, canonicals, robots, sitemaps, redirects), on-page (titles, descriptions, headings, internal links, content that answers intent), structured data (JSON-LD for Organization, Product, Article, FAQ, LocalBusiness, BreadcrumbList), social previews (Open Graph, X cards), multilingual SEO with hreflang and Arabic keywords, local SEO, Core Web Vitals, and AI-search visibility (clear answers, citations, llms.txt). Use when building or launching a public site, landing page, blog, store or docs; when pages don't appear in Google or share badly; or when the user says SEO, Google ranking, meta tags, sitemap, Open Graph, structured data, الظهور في جوجل, السيو, محركات البحث. Ships seo_check.py for built HTML folders or live URLs.
+description: Load when building or launching a public site, landing page, blog or store, or when pages don't rank or share badly. Technical SEO, metadata, JSON-LD, Open Graph, hreflang and Arabic SEO, AI search. Triggers: SEO, sitemap, الظهور في جوجل.
 ---
 
 # SEO and Discoverability

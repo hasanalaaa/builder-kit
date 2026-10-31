@@ -1,6 +1,6 @@
 ---
 name: ai-workflow
-description: How to build software with AI coding agents (Claude Code, Cursor, Lovable, Bolt, v0, Replit, Copilot) without losing control - project context files (CLAUDE.md/AGENTS.md), spec-first prompts, plan-then-execute, one small verified step at a time, checkpoint commits, review of AI diffs, breaking out of "fix one thing, break another" loops, recovering from bad changes (revert, bisect), parallel sessions and subagents, guardrail hooks that run the builder-kit scanners, context and cost hygiene, and a prompt library for common tasks. Use at the start of any AI-assisted project or session, when the AI keeps breaking things or going in circles, when changes are too big to review, or when the user says vibe coding, prompt, Cursor rules, CLAUDE.md, the AI broke my app, AI keeps looping, الفايب كودنج, الذكاء يخرب الكود, كيف أكلم الـ AI. Ships context_pack.py (draft project CLAUDE.md facts from the repo).
+description: Load at the start of an AI-assisted project or when the AI keeps breaking things or looping. CLAUDE.md/AGENTS.md, plan→small verified steps, checkpoints, reviewing AI diffs, recovery. Triggers: vibe coding, Cursor/Lovable/Bolt, the AI broke my app, الذكاء يخرب الكود.
 ---
 
 # AI Workflow
