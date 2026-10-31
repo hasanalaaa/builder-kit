@@ -1,0 +1,15 @@
+{
+  "name": "builder-kit",
+  "description": "Local marketplace for the builder-kit plugin.",
+  "owner": {
+    "name": "Hasan"
+  },
+  "plugins": [
+    {
+      "name": "builder-kit",
+      "description": "Complete standard for building sites, apps and AI-built products: 26 skills from idea to launch and operation, 25+ tested scanners with one SHIP/BLOCKED gate, guardrail hook, commands and reviewer agents.",
+      "source": "./plugins/builder-kit",
+      "category": "development"
+    }
+  ]
+}

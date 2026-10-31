@@ -1,0 +1,37 @@
+id,name,mood,keywords,brand_hex,accent_hex,neutral_tint,dark_first,product_fit
+trust-blue,Trust blue,trustworthy calm professional,finance bank enterprise saas trust insurance,#2563EB,#F59E0B,cool,no,fintech · enterprise SaaS · insurance
+deep-navy,Deep navy,serious premium institutional,bank government law consulting corporate,#1E3A8A,#C9A227,cool,no,banks · law firms · government
+ocean-teal,Ocean teal,fresh calm clean,health clinic wellness water travel,#0F766E,#F97316,cool,no,health · clinics · travel
+mint-fresh,Mint fresh,fresh light optimistic,fintech consumer savings eco app,#10B981,#6366F1,neutral,no,consumer fintech · eco apps
+forest,Forest green,natural grounded sustainable,sustainability agriculture outdoor eco,#166534,#D97706,warm,no,sustainability · outdoor · agriculture
+gulf-green,Gulf green,formal national heritage,saudi government gulf heritage formal bank,#006C35,#B8860B,warm,no,Gulf government · banks · national brands
+emerald-gold,Emerald and gold,luxury heritage hospitality,hospitality luxury hotel heritage arabic,#065F46,#CA8A04,warm,no,hospitality · heritage luxury
+sand-ink,Sand and ink,warm heritage arabic cultural,arabic culture museum heritage desert,#7C5A2E,#1E3A8A,warm,no,culture · museums · Arabic-first brands
+indigo-calm,Indigo calm,focused intelligent calm,productivity education ai saas,#4F46E5,#14B8A6,cool,no,productivity · education
+violet-creative,Violet creative,creative imaginative premium,creative tools design music ai,#7C3AED,#F43F5E,cool,no,creative tools · music
+plum-luxury,Plum luxury,luxurious sensual refined,beauty fashion perfume cosmetics,#6B2149,#D4AF37,warm,no,beauty · fashion · perfume
+rose-soft,Rose soft,gentle caring warm,wellness beauty family femtech,#E11D48,#0EA5E9,warm,no,femtech · beauty · wellness
+coral-energy,Coral energy,energetic friendly social,social food delivery lifestyle,#F43F5E,#0EA5E9,warm,no,social · lifestyle · delivery
+tangerine,Tangerine,energetic appetizing youthful,food restaurant delivery kids,#EA580C,#16A34A,warm,no,food · restaurants · delivery
+amber-sun,Amber sun,optimistic warm approachable,education community events,#D97706,#2563EB,warm,no,education · community · events
+crimson-bold,Crimson bold,bold passionate urgent,media sports news entertainment,#B91C1C,#111827,neutral,no,media · sports · news
+graphite-mono,Graphite mono,minimal serious neutral,portfolio architecture agency minimal,#18181B,#E11D48,neutral,no,portfolios · agencies · architecture
+slate-tool,Slate tool,quiet focused neutral,admin dashboard internal tool b2b,#334155,#2563EB,cool,no,admin panels · internal tools
+electric-cyan,Electric cyan,technical futuristic sharp,developer ai data security dark,#06B6D4,#A855F7,cool,yes,dev tools · AI · data
+neon-lime,Neon lime,edgy energetic techy,gaming web3 sports energy dark,#84CC16,#EC4899,neutral,yes,gaming · energy · sports tech
+terminal-green,Terminal green,hacker technical,terminal ops security monitoring,#22C55E,#F59E0B,neutral,yes,ops · security · monitoring
+midnight-blue,Midnight blue,deep focused premium,ai analytics finance premium dark,#3B82F6,#F472B6,cool,yes,AI analytics · premium dashboards
+aubergine-dark,Aubergine dark,moody creative,music streaming creative nightlife,#A855F7,#FACC15,cool,yes,music · streaming · nightlife
+medical-blue,Medical blue,clinical reassuring clear,hospital clinic telehealth pharmacy,#0369A1,#059669,cool,no,hospitals · telehealth · pharmacy
+child-play,Child play,playful bright safe,kids education toys games family,#2563EB,#F59E0B,neutral,no,kids · education · family
+earth-clay,Earth clay,organic handmade warm,craft ceramics coffee bakery organic,#9A3412,#365314,warm,no,crafts · coffee · bakeries
+olive-calm,Olive calm,natural calm mature,wellness tea organic furniture,#4D7C0F,#B45309,warm,no,wellness · organic · furniture
+sky-light,Sky light,airy light open,travel weather productivity airy,#0284C7,#F97316,cool,no,travel · weather
+cobalt-bold,Cobalt bold,confident bold modern,startup saas marketing bold,#1D4ED8,#FACC15,cool,no,startups · bold SaaS marketing
+ruby-commerce,Ruby commerce,confident retail persuasive,ecommerce retail fashion sale,#BE123C,#0F172A,neutral,no,retail · fashion e-commerce
+saffron-spice,Saffron spice,warm aromatic cultural,restaurant arabic cuisine spice hospitality,#C2410C,#065F46,warm,no,Arabic cuisine · hospitality
+desert-dusk,Desert dusk,warm sunset premium,real estate travel desert resort,#B45309,#1E3A8A,warm,no,real estate · resorts
+royal-purple,Royal purple,regal premium ceremonial,events wedding premium membership,#5B21B6,#D4AF37,cool,no,events · memberships
+ink-paper,Ink and paper,literary editorial quiet,publishing blog books newsletter,#1F2937,#B91C1C,warm,no,publishing · newsletters
+pine-dark,Pine dark,calm technical natural,developer outdoor climate data,#34D399,#FBBF24,cool,yes,climate data · developer tools
+charcoal-orange,Charcoal orange,industrial strong,logistics construction automotive,#EA580C,#1F2937,neutral,no,logistics · construction · automotive

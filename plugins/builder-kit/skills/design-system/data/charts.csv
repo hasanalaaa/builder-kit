@@ -1,0 +1,21 @@
+id,question,keywords,best,alternatives,avoid,a11y
+trend,Change over time (many points),trend time series over time growth daily line,Line chart,Area (single series) · sparkline in KPI,Pie · 3D anything,Direct labels on lines; data table alternative
+trend-few,Change over few periods,monthly quarterly yearly periods compare time,Column chart,Line with markers,Stacked area with many series,Label values on bars when ≤ 12
+compare,Compare categories,compare categories ranking top items,Horizontal bar sorted,Dot plot · lollipop,Pie with many slices · radar,Sorted order; labels on bars
+part-whole,Part of a whole (≤ 5 parts),share percentage composition breakdown,Stacked bar 100% or donut with labels,Treemap (many parts),Pie with > 5 slices · 3D pie,Percent labels; not color-only legend
+part-whole-time,Composition over time,share over time mix evolution,Stacked area or stacked column,Small multiples,Multiple pies,Limit to ≤ 5 series
+distribution,Distribution of values,distribution spread histogram range,Histogram,Box plot · violin,Line chart,Describe in text summary
+relationship,Relationship between two measures,correlation relationship scatter versus,Scatter plot,Bubble (3rd variable),Dual-axis line,Avoid relying on bubble size alone
+geo-rate,Geographic rates,map region country rate per capita,Choropleth (normalized rates),Hex map,Choropleth of raw counts,Provide table; colorblind-safe sequential scale
+geo-points,Locations and quantities,locations stores branches points map,Symbol/proportional map,Clustered markers,Choropleth,Keyboard-reachable markers
+kpi,Single key number,kpi metric total big number dashboard,Big number + delta + small trend,Bullet chart,Gauge,State the comparison period in text
+goal,Progress to a target,goal target quota progress,Progress bar with target marker,Bullet chart,Gauge · donut progress,Text value alongside bar
+funnel,Conversion through steps,funnel conversion steps drop-off,Horizontal bar funnel with % between steps,Sankey for branches,3D funnel,Show step conversion % in text
+flow,Flows between states,flow sankey journey transfer,Sankey,Alluvial,Network hairball,Table of top flows
+ranking-change,Rank changes over time,rank position change bump,Bump chart,Slope chart,Line with many series,Label ends of lines
+two-points,Before vs after,before after compare two periods change,Slope chart or dumbbell,Grouped bar,Separate charts,Label both ends
+hierarchy,Hierarchical parts,hierarchy nested categories tree,Treemap,Sunburst (sparingly),Nested pies,Provide expandable table
+schedule,Schedule or timeline,timeline schedule gantt project,Gantt / timeline,Calendar heatmap,Pie,Readable dates; RTL timeline direction decided
+heat,Intensity across two dimensions,heatmap matrix intensity hour day,Heatmap,Calendar heatmap,3D surface,Sequential colorblind-safe palette; values on hover and in table
+uncertainty,Estimates with uncertainty,forecast confidence interval range estimate,Line with confidence band,Error bars,Hiding uncertainty,Explain band in caption
+realtime,Live streaming metric,realtime live monitoring streaming,Line with rolling window,Sparkline + current value,Animated pie,Throttle updates; announce critical changes only

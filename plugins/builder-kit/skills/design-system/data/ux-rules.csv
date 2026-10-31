@@ -1,0 +1,116 @@
+id,category,rule,do,dont,severity,platform
+A01,accessibility,Text contrast meets WCAG AA,body ≥ 4.5:1 · large ≥ 3:1 · check with contrast.py,light gray text for elegance,critical,all
+A02,accessibility,Focus is always visible,2px ring with offset via :focus-visible · ≥ 3:1 against background,outline:none without replacement,critical,web
+A03,accessibility,Every control has an accessible name,visible label or aria-label on icon buttons,icon-only buttons with no label,critical,all
+A04,accessibility,Keyboard can do everything a mouse can,native button/a/input elements · logical tab order · Escape closes overlays,div onClick without role and key handlers,critical,web
+A05,accessibility,Do not rely on color alone,icon + text + color for status and errors,red/green only states,high,all
+A06,accessibility,Respect reduced motion,prefers-reduced-motion variant · no parallax when reduced,mandatory animations,high,all
+A07,accessibility,Allow zoom and text scaling,layout survives 200% zoom and Dynamic Type,user-scalable=no · fixed px heights on text,critical,all
+A08,accessibility,Images have purposeful alt text,describe purpose · empty alt for decorative,filename alt or 'image',high,web
+A09,accessibility,Headings form an outline,one h1 · no skipped levels · headings describe sections,styling divs as headings,medium,web
+A10,accessibility,Touch targets are large enough,≥ 44pt iOS · ≥ 48dp Android · ≥ 24px web minimum,tiny icon links close together,high,mobile
+A11,accessibility,Announce dynamic changes,aria-live polite for toasts/status · role=alert for errors,silent updates screen readers miss,medium,web
+A12,accessibility,Dialogs manage focus,trap focus · return focus to trigger · label with title,focus lost behind modal,high,web
+A13,accessibility,Set page language and direction,html lang and dir · lang on mixed-language spans,missing lang (wrong screen-reader voice),high,web
+A14,accessibility,Captions and transcripts for media,captions on video · transcript for audio,autoplay with sound,high,all
+A15,accessibility,Do not use timeouts users cannot extend,warn before session expiry · allow extend,silent logout losing work,medium,all
+F01,forms,Visible labels above fields,label element tied to input,placeholder as only label,critical,all
+F02,forms,Ask only what you need,remove optional fields · infer from context,long forms 'for marketing',high,all
+F03,forms,Use correct input types and autocomplete,type=email/tel · autocomplete tokens · inputmode,plain text for everything,high,all
+F04,forms,Validate at the right time,on blur and on submit · live after first error,errors while typing first character,medium,all
+F05,forms,Errors say how to fix,specific message next to field + summary on long forms,'Invalid input',high,all
+F06,forms,Keep user input on error,preserve values after failed submit,clearing the form,critical,all
+F07,forms,Single column layout,one field per row except tightly related pairs,multi-column scattered forms,medium,all
+F08,forms,Smart defaults,prefill known values · sensible defaults · remember last choice,blank fields you could prefill,medium,all
+F09,forms,Prevent double submit,disable + loading state · idempotent server,multiple orders on double click,high,all
+F10,forms,Allow paste in passwords and codes,paste support · show/hide toggle,blocking paste,high,all
+F11,forms,Mark optional not required,label '(optional)' on the few optional fields,asterisks everywhere,low,all
+F12,forms,Save long forms,draft autosave · warn on leave with unsaved changes,losing 20 minutes of input,high,all
+F13,forms,Input font ≥ 16px on mobile,16px min to avoid iOS zoom,14px inputs,medium,mobile
+F14,forms,OTP fields done right,one-time-code autocomplete · numeric · paste full code · resend timer,six separate fields that break paste,medium,all
+N01,navigation,Show where the user is,active nav state · page title · breadcrumbs for deep trees,ambiguous location,high,all
+N02,navigation,Primary navigation visible,sidebar/tab bar for main sections,hamburger hiding primary nav on desktop,medium,all
+N03,navigation,Links navigate and buttons act,a for navigation · button for actions,button that navigates · link that submits,medium,web
+N04,navigation,Back always works,URL state for filters/tabs · system back on mobile,state lost on back,high,all
+N05,navigation,Mobile tab bar 3–5 items,labels under icons · thumb zone,7 icon-only tabs,medium,mobile
+N06,navigation,Search for large content,visible search · ⌘K in tools,deep menus as the only path,medium,all
+N07,navigation,Deep links for every screen,shareable URLs · universal links,screens unreachable by URL,medium,all
+B01,feedback,Every action responds within 100ms,pressed state · optimistic UI,dead clicks,high,all
+B02,feedback,Show progress for waits,skeleton 1–3s · progress bar > 3s with explanation,frozen screen,high,all
+B03,feedback,Undo over confirmation,undo toast for reversible actions,are-you-sure dialogs for everything,medium,all
+B04,feedback,Confirm destructive irreversible actions,name the object · consequence · verb button,generic 'Are you sure? OK',high,all
+B05,feedback,Errors appear near the cause,inline field/section errors · toasts only for non-blocking,global toast for a field error,medium,all
+B06,feedback,Success matches the action weight,inline check for small · page for big milestones,modal for every save,low,all
+B07,feedback,Offline state is explicit,banner · cached data · queued actions,silent failures offline,high,mobile
+B08,feedback,Empty states guide action,what + why + CTA,blank screen or bare 'No data',medium,all
+L01,layout,One primary action per view,single primary button · others secondary,three competing primary buttons,high,all
+L02,layout,Spacing on a scale,4px-based tokens · gap utilities,arbitrary 13px/27px values,medium,all
+L03,layout,Group by proximity,tight within groups · ≥ 2× between groups,uniform spacing everywhere,medium,all
+L04,layout,Readable line length,60–75ch Latin · 50–70ch Arabic,full-width paragraphs on desktop,medium,web
+L05,layout,No horizontal scroll at 320px,fluid layouts · wrap · min() and clamp(),fixed-width containers,high,web
+L06,layout,Mobile-first responsive,design 375px first · layouts change at breakpoints,desktop squeezed onto phone,high,web
+L07,layout,Avoid card overuse,cards for distinct objects only · no nested cards,everything in a card,medium,all
+L08,layout,Align to few edges,shared grid lines,every element on its own left edge,low,all
+L09,layout,Use dvh on mobile full-height,100dvh / svh,100vh jumping with URL bar,medium,web
+L10,layout,Respect safe areas,env(safe-area-inset-*) · SafeAreaView,content under notch/home indicator,high,mobile
+T01,typography,Limit sizes and weights,≤ 6 sizes per screen · 2 weights per family,ten font sizes,medium,all
+T02,typography,Body text ≥ 16px,16–18px body · 12px floor for captions,10px labels,high,all
+T03,typography,Line height fits the script,1.5–1.65 Latin · 1.7–1.9 Arabic,tight Arabic line height clipping diacritics,high,all
+T04,typography,Tabular numbers in data,font-variant-numeric: tabular-nums,jumping digits in tables/timers,low,all
+T05,typography,No letter-spacing or italics in Arabic,weight/color for emphasis,synthetic italic Arabic,high,all
+T06,typography,Load fonts without layout shift,font-display swap · metric fallback · preload,invisible text then jump,medium,web
+T07,typography,Balance headings,text-wrap balance · avoid single-word last lines,orphaned last word in hero,low,web
+C01,color,Color has meaning,brand for primary actions · semantic for states,random accent colors,medium,all
+C02,color,Neutrals tinted toward brand,1–2% chroma in grays,dead pure grays next to brand,low,all
+C03,color,Dark mode is a designed theme,separate semantic values · elevation via lighter surfaces,inverted colors,medium,all
+C04,color,Avoid default AI palette,brand-derived hue,purple-indigo-pink gradient glow,medium,web
+C05,color,Gradients sparingly,one gradient moment · never text fill,gradient text and buttons everywhere,medium,all
+M01,mobile,Thumb-friendly primary actions,bottom placement for main CTA,primary action in top corner only,medium,mobile
+M02,mobile,Use native controls,system pickers/sheets/share,custom date pickers that break conventions,medium,mobile
+M03,mobile,Ask permissions in context,pre-prompt explaining value at moment of need,permissions dialog on first launch,high,mobile
+M04,mobile,Support gestures with visible alternatives,swipe actions + menu equivalent,gesture-only features,medium,mobile
+M05,mobile,Haptics for meaningful moments,success/warning/selection feedback,haptics on every tap,low,mobile
+M06,mobile,Keyboard does not cover inputs,KeyboardAvoidingView / scroll into view,submit button hidden under keyboard,high,mobile
+P01,performance,Fast first content,LCP < 2.5s · optimized hero image,huge unoptimized hero video,high,web
+P02,performance,No layout shift,width/height on media · reserved space for ads/embeds,content jumping while reading,high,web
+P03,performance,Responsive interactions,INP < 200ms · avoid long tasks,frozen UI on click,high,web
+P04,performance,Lazy load below the fold,loading=lazy · code splitting,loading everything upfront,medium,web
+P05,performance,Animate transform and opacity,GPU-friendly properties,animating width/top/left,medium,all
+P06,performance,Virtualize long lists,windowing for > 500 rows,rendering 10k DOM rows,medium,all
+K01,content,Buttons are verbs,'Create invoice',OK / Submit / Click here,medium,all
+K02,content,Same word for the same thing,glossary in DESIGN.md,project/workspace/space mixed,medium,all
+K03,content,Real content in designs,real names and lengths in both languages,lorem ipsum and John Doe,high,all
+K04,content,Never expose internals,human error messages,stack traces and SQL errors,critical,all
+K05,content,Specific numbers and dates,'Trial ends 12 May',vague 'soon',low,all
+K06,content,Plain language,short sentences · user words,jargon and marketing fluff,medium,all
+R01,rtl,Use logical CSS properties,margin-inline-start · ms-/me- utilities,margin-left in shared components,high,web
+R02,rtl,Mirror directional UI,arrows chevrons progress carousels drawers,mirroring play buttons clocks logos,high,all
+R03,rtl,Isolate mixed-direction text,bdi / unicode-bidi isolate for numbers emails codes,scrambled phone numbers in RTL,medium,all
+R04,rtl,Arabic plural rules,ICU plurals zero one two few many other,'n ملفات' for all n,medium,all
+R05,rtl,Arabic-capable fonts declared,Arabic family in font stack for :lang(ar),fallback to system font mid-page,high,all
+R06,rtl,Consistent digit system,decide 0-9 or ٠-٩ per product,mixing digit systems,low,all
+R07,rtl,Test RTL in real screens,screenshots in ar + en,assuming flex direction handles it,high,all
+O01,motion,Motion has a purpose,feedback orientation continuity,decorative fade on every section,medium,all
+O02,motion,Short durations,100–300ms UI · exits faster,800ms dropdowns,medium,all
+O03,motion,Content visible without animation,start from visible state,opacity:0 waiting for scroll trigger,high,web
+O04,motion,No flashing,< 3 flashes per second,strobe effects,critical,all
+D01,data,Charts state the insight,title as takeaway · direct labels,legend-hunting · 3D charts,medium,all
+D02,data,Bar axes start at zero,zero baseline for bars,truncated axes exaggerating change,high,all
+D03,data,Accessible chart alternative,data table or text summary,image-only charts,medium,all
+D04,data,Tables align numbers to end,end-aligned numerals with units in header,center-aligned numbers,low,all
+D05,data,Filters persist in URL,shareable filtered views,filters reset on reload,medium,web
+S01,trust,Show security and privacy cues where data is entered,why we ask · how it is protected,unexplained sensitive fields,medium,all
+S02,trust,Price and fees are transparent,total with tax/fees before final step,drip pricing at checkout,critical,all
+S03,trust,No dark patterns,easy cancel · honest defaults · clear opt-ins,confirmshaming · pre-checked marketing boxes · roach motel,critical,all
+S04,trust,Real social proof,named testimonials · sourced numbers,fake reviews or unverifiable stats,high,all
+G01,onboarding,Time to first value is minimal,skip non-essential steps · seed data,10-screen tours before use,high,all
+G02,onboarding,Learn by doing,checklists of real tasks,static carousels of features,medium,all
+G03,onboarding,Progressive disclosure,advanced options revealed when needed,every setting on first screen,medium,all
+E01,ecommerce,Guest checkout available,account optional after purchase,forced sign-up before paying,high,all
+E02,ecommerce,Local payment methods,Apple Pay/Google Pay/mada/regional wallets,cards only,high,all
+E03,ecommerce,Delivery date and returns visible early,on product page,surprises at checkout,medium,all
+E04,ecommerce,Sticky add-to-cart on mobile,persistent CTA after scroll,CTA lost under long descriptions,medium,mobile
+I01,ai,Stream and show progress,token streaming · step status,silent spinner for 20s,high,all
+I02,ai,User stays in control,stop · edit · retry · undo AI actions,irreversible AI actions without confirm,high,all
+I03,ai,Show sources and confidence,citations · 'may be inaccurate' where relevant,authoritative tone without sources,medium,all
+I04,ai,Explain data use,what is sent to the model · retention · opt-out,hidden data sharing,high,all

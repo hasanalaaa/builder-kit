@@ -1,0 +1,17 @@
+{
+  "description": "builder-kit guardrails: after each file edit, run fast builder-kit scanners on that file and send blocking findings back to Claude. Disable with BUILDER_KIT_HOOKS=off.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/post_edit.py\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
