@@ -10,6 +10,7 @@ AI agents write code fast and confidently, including the wrong code. The differe
 | File | Use it for |
 |------|-----------|
 | `references/playbook.md` | Context files, the build loop, prompt patterns and a prompt library, reviewing AI diffs, loop-breaking, recovery with git, parallel work, hooks and guardrails, context/cost hygiene, tool-specific notes (Claude Code, Cursor, Lovable/Bolt/v0, Replit) |
+| `references/orchestration.md` | Model routing and fan-out: explorer (haiku) for wide reading, slice-builder (sonnet) per independent slice in its own worktree, builder-reviewer (opus) with a fresh context on the combined diff; when not to fan out |
 | `scripts/context_pack.py` | Read a repo and print the facts an agent needs (stack, package manager, run/test/lint/build commands, directories, entry points, env var names, docs present) as a draft `CLAUDE.md` "Per-project facts" block |
 
 ## 1. Rules
@@ -22,8 +23,9 @@ AI agents write code fast and confidently, including the wrong code. The differe
 6. **Two strikes, then re-diagnose.** If the same fix fails twice, stop patching: revert to the last green commit, reproduce, read the actual error and code, form a new hypothesis (`debugging`).
 7. **The agent never weakens tests, removes validation or disables security to make something pass.** Treat any such diff as a rejection.
 8. **Guardrails run automatically**: builder-kit hooks scan edited files; `ship-check` before merge; CI on every push.
-9. **Keep sessions focused.** New task → new session (or clear context). Long sessions drift; summaries lose detail.
-10. **You own the result.** Read every diff that touches auth, money, data deletion, permissions or migrations line by line.
+9. **Route work by model.** Wide reading goes to `builder-kit:explorer`, independent slices to `builder-kit:slice-builder` in parallel, review to `builder-kit:builder-reviewer` with a fresh context. Under 3 files, stay single-threaded (`references/orchestration.md`).
+10. **Keep sessions focused.** New task → new session (or clear context). Long sessions drift; summaries lose detail.
+11. **You own the result.** Read every diff that touches auth, money, data deletion, permissions or migrations line by line.
 
 ## 2. The build loop (every step)
 
