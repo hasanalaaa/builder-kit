@@ -1,0 +1,25 @@
+{
+  "name": "ai-chat-stream",
+  "summary": "Streaming chat route on the Anthropic TypeScript SDK: auth, per-user rate limit before spend, strict input caps, max_tokens + timeout, abort on client disconnect, key server-only.",
+  "files": [
+    {"from": "route.ts", "to": "src/app/api/chat/route.ts"},
+    {"from": "route.test.ts", "to": "src/app/api/chat/route.test.ts"},
+    {"from": "rate-limit.ts", "to": "src/lib/rate-limit.ts"},
+    {"from": "../_shared/env.ts", "to": "src/lib/env.ts"},
+    {"from": "../_shared/http.ts", "to": "src/lib/http.ts"},
+    {"from": "../_shared/auth.ts", "to": "src/lib/auth.ts"},
+    {"from": "../_shared/fake-auth.ts", "to": "src/test/fake-auth.ts"},
+    {"from": "../_shared/vitest.config.mts", "to": "vitest.config.mts", "optional": true}
+  ],
+  "deps": ["@anthropic-ai/sdk", "zod@^4"],
+  "devDeps": ["vitest", "@types/node@^22"],
+  "env": {"ANTHROPIC_API_KEY": "server-only; never NEXT_PUBLIC_*"},
+  "adapt": [
+    "src/lib/auth.ts requireUser(): wire to your auth provider (it returns 401 until you do).",
+    "src/lib/rate-limit.ts: swap the in-memory window for a shared store (Upstash/Redis) before multi-instance deploys; add a daily token quota per user.",
+    "route.ts MODEL, MAX_TOKENS, SYSTEM, effort: tune against your eval set (ai-features references/patterns.md §7).",
+    "Client: read res.body with a reader and wire the Stop button to an AbortController passed to fetch(); render the text as text, never as raw HTML.",
+    "Persist the conversation after the stream ends (where usage is logged), owner-scoped like owner-scoped-api.",
+    "Refusals: the stream ends with stop_reason 'refusal'; show a message, or add the SDK's server-side fallbacks (claude-api skill)."
+  ]
+}

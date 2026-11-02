@@ -12,6 +12,7 @@ Money bugs are the most expensive bugs: they lose revenue silently, give away pa
 | `references/billing.md` | Choosing a provider/model, data model (customers, subscriptions, entitlements, ledger), checkout flows, webhooks and the events to handle, subscription lifecycle, proration, trials, coupons, tax, invoices, dunning, refunds/disputes, credits/usage billing, marketplaces, Gulf/regional methods, in-app purchases, testing, reconciliation, pricing page |
 
 Security checks for payments live in `launch-security` 19 (prices/payments), P12 (webhook pattern), S1–S2 (store purchase rules). Follow them; `security_scan.py` flags unsigned webhooks.
+Ready code: start a Stripe webhook from the tested `stripe-webhook` recipe (`recipes` skill, `bk_add.py stripe-webhook`) and adapt it.
 
 ## 1. Rules
 

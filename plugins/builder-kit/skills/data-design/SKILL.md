@@ -23,6 +23,7 @@ Data outlives code. A bad function is fixed in a commit; a bad schema with a yea
 6. **Index what you filter, join and sort on.** Every foreign key gets an index (Postgres doesn't create one). Composite indexes match the query's equality columns first, then range/sort.
 7. **Migrations are forward-only, reviewed and reversible in practice.** Never edit a migration that has run anywhere shared. Breaking changes use expand → migrate → contract.
 8. **Access control lives next to the data** when the client can reach the DB (Supabase/Firebase): RLS on every table (`launch-security` 03). Otherwise one data-access module per feature owns its tables.
+   Ready code: RLS on self-managed Postgres starts from the tested `postgres-rls` recipe, owner-scoped queries from `owner-scoped-api` (`recipes` skill, `bk_add.py`).
 9. **Delete deliberately.** Decide per entity: hard delete, soft delete (`deleted_at`), or archive. Account deletion must really remove or anonymize personal data (`legal-compliance`, store rules).
 10. **Backups are only real when restored.** Point-in-time recovery on, and a restore drill on a schedule (`launch-security` B3).
 

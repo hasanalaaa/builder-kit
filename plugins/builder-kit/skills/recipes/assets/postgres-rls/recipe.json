@@ -1,0 +1,23 @@
+{
+  "name": "postgres-rls",
+  "summary": "Plain-Postgres RLS: owner policies for select/insert/update/delete (forced, fail closed), a withUser() transaction helper, and a test proving user B cannot read or write user A's rows.",
+  "files": [
+    {"from": "migration.sql", "to": "db/migrations/documents_rls.sql"},
+    {"from": "rls.ts", "to": "src/lib/rls.ts"},
+    {"from": "rls.test.ts", "to": "src/lib/rls.test.ts"},
+    {"from": "../_shared/env.ts", "to": "src/lib/env.ts"},
+    {"from": "../_shared/db.ts", "to": "src/lib/db.ts"},
+    {"from": "../_shared/fake-db.ts", "to": "src/test/fake-db.ts"},
+    {"from": "../_shared/vitest.config.mts", "to": "vitest.config.mts", "optional": true}
+  ],
+  "deps": ["pg"],
+  "devDeps": ["vitest", "@types/pg", "@electric-sql/pglite", "@types/node@^22"],
+  "env": {"DATABASE_URL": "connection string of a login role that is a member of app_user (not a superuser, not BYPASSRLS)"},
+  "adapt": [
+    "Create the app's login role once (outside migrations, password from your secret store): create role app_login login; grant app_user to app_login;",
+    "Rename documents → your table; copy the four policies, enable + force RLS and the grant for every table that holds user data.",
+    "Call withUser(user.id, …) with the id from requireUser(); queries outside it see nothing.",
+    "Supabase: use auth.uid() policies instead (launch-security references/secure-patterns.md P5); this recipe is for self-managed Postgres.",
+    "Views over these tables: create them with (security_invoker = true)."
+  ]
+}

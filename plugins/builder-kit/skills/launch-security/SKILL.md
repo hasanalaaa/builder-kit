@@ -68,6 +68,7 @@ Each check in the reference files has: **Audit** (what to look for), **Fix** (wh
 Security is cheapest when it's in the first version. For any feature in the §3 table:
 1. **Threat notes first** (H1): 5 lines: what's valuable, who could abuse it, how, and the control for each.
 2. **Start from the golden pattern** in `references/secure-patterns.md` (P1–P16). Never hand-write auth checks, validation, tokens, webhooks, uploads or redirects from scratch when a pattern exists; reuse the project's existing helper if it already has one.
+   Next.js/TS uploads, Stripe webhooks, owner-scoped CRUD, RLS and AI chat: copy the tested recipe (`recipes` skill: `bk_add.py file-upload|stripe-webhook|owner-scoped-api|postgres-rls|ai-chat-stream`) and adapt it.
 3. **Write the abuse tests with the feature** (P16): signed-out → 401, another user's object → 404, extra/tampered fields → 400, foreign origin → 403, over limit → 429.
 4. **Scan before calling it done:** `python3 <skill>/scripts/security_scan.py .` → 0 ERROR; every WARN fixed or explained. Then the §3 checks for that feature.
 5. **Review the diff against the rules below.**

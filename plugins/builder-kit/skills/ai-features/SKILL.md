@@ -13,6 +13,7 @@ An AI feature is a product feature with a probabilistic, expensive, slow, attack
 | `scripts/ai_check.py` | Scan for AI keys in client code, LLM calls without max tokens / timeout, model output rendered as raw HTML, user input interpolated into system prompts, AI routes without rate limiting, model IDs hard-coded in many files |
 
 Security of AI features (prompt injection, tool permissions, data leaks) is specified in `launch-security/references/platforms.md` P4 and B1; follow both.
+Ready code: a streaming chat endpoint (Next.js, Anthropic SDK) starts from the tested `ai-chat-stream` recipe (`recipes` skill, `bk_add.py ai-chat-stream`).
 
 ## 1. Rules
 
