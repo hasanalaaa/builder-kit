@@ -10,7 +10,7 @@ The goal: a codebase that looks like a professional electrical install. Every wi
 The opposite is a pile of tangled cables. Research on AI-assisted code shows that tangle measurably: GitClear's analysis of hundreds of millions of changed lines found copy-pasted code rising sharply and refactoring ("moved" code) falling since AI assistants spread. The usual causes are context-blind generation: new helpers written next to existing ones, a third way of fetching data, logic dropped wherever the cursor was. This skill exists to prevent that.
 
 Four modes. Pick by the request:
-- **NEW**: starting a project. Follow `references/workflows.md` (NEW).
+- **NEW**: starting a project. Follow `references/workflows.md` (NEW). Once the skeleton exists, `python3 scripts/repo_map.py` shows it at a glance.
 - **BUILD**: any change to an existing project. Follow §3.2 on every change, however small.
 - **UNTANGLE**: the project is already messy. Follow `references/workflows.md` (UNTANGLE) and `references/refactoring.md`.
 - **SIMPLIFY**: the code or the user flow works but is longer or harder than it needs to be ("make it shorter", "simplify", "fewer clicks", "اختصر"). Follow `references/workflows.md` (SIMPLIFY) and `references/simplify.md`.
@@ -22,6 +22,7 @@ Four modes. Pick by the request:
 | `references/refactoring.md` | Untangling an existing mess safely, step by step, without a rewrite |
 | `references/templates.md` | `ARCHITECTURE.md`, ADR, and the CLAUDE.md/AGENTS.md conventions block |
 | `references/simplify.md` | Same capability with less code and fewer user steps: the shortening ladder, before/after code patterns, UX step reduction, the SIMPLIFY workflow and the equivalence checklist |
+| `scripts/repo_map.py` | Compact map of any repo (~2.5k tokens, cached, honors .gitignore): stack, entry points, one line per source file with its exports, functions, classes, Next.js routes + HTTP methods, SQL tables. Read it instead of opening dozens of files. `--max-tokens N`, `--refresh` |
 | `scripts/arch_check.py` | Architecture fitness check (stdlib Python, any repo): god files, long functions, too many parameters, deep nesting, import cycles, cross-feature leaks, duplicated blocks, junk-drawer and `_v2` files, commented-out code, crowded folders. `--stats` prints size metrics for before/after comparisons |
 
 Talk to the user in their language (Arabic if they write Arabic). Code, paths and identifiers stay as-is.
@@ -113,7 +114,7 @@ NEW (starting a project), UNTANGLE (messy codebase) and SIMPLIFY (same capabilit
 ### 3.2 BUILD: every change
 
 **Before writing code**
-1. Read `ARCHITECTURE.md` (create it via `references/workflows.md` UNTANGLE step 1 if missing) and the files you'll change, their callers and tests.
+1. Read `ARCHITECTURE.md` (create it via `references/workflows.md` UNTANGLE step 1 if missing). Run `python3 scripts/repo_map.py <repo>` once per session to learn the layout and existing symbols, instead of opening files to explore. Then read the files you'll change, their callers and tests.
 2. Decide where the change lives:
    - It belongs to one feature → that feature's folder.
    - It's a new business capability → a new feature folder with its own `index`.
@@ -135,6 +136,7 @@ NEW (starting a project), UNTANGLE (messy codebase) and SIMPLIFY (same capabilit
 1. Run formatter, linter, type check, tests, boundary rules and `arch_check.py`. All green.
 2. Re-read the diff as a reviewer against §4.
 3. If the structure changed (new module, new dependency direction, moved code), update `ARCHITECTURE.md` in the same change. If a significant choice was made, add an ADR.
+4. Learned something this repo will trip on again (a trap, a convention, a command)? Save it in one line: `python3 <plugin>/lib/lessons.py add "<lesson>"`. It's shown at the start of every later session; the gates also record rules they keep catching.
 
 ## 4. The tangle checklist (review every diff against it)
 
