@@ -29,6 +29,14 @@ CLEAN = {"pages": [{**PAGE, "viewport": 375, "lang": "ar", "dir": "rtl", "shot":
                    {**PAGE, "viewport": 1280, "shot": "/s/index-1280.png"}]}
 
 
+def static_server(port):
+    """Shell command serving the cwd. Plain TCPServer, not `python -m http.server`: HTTPServer.server_bind calls
+    socket.getfqdn(), which can hang 20s+ on macOS CI runners."""
+    code = (f"import http.server as h, socketserver as s; s.TCPServer.allow_reuse_address = True; "
+            f"s.TCPServer(('127.0.0.1', {port}), h.SimpleHTTPRequestHandler).serve_forever()")
+    return f'{sys.executable} -c "{code}"'
+
+
 def free_port():
     with socket.socket() as s:
         s.bind(("127.0.0.1", 0))
@@ -90,7 +98,7 @@ def test_serve():
     port = free_port()
     url = f"http://127.0.0.1:{port}"
     # `& wait` keeps the server a grandchild: only killing the process group stops it.
-    cmd = f"{sys.executable} -m http.server {port} --bind 127.0.0.1 >/dev/null 2>&1 & wait"
+    cmd = f"{static_server(port)} >/dev/null 2>&1 & wait"
     with tempfile.TemporaryDirectory() as d:
         log = os.path.join(d, "server.log")
         with verify_ui.serve(cmd, url, 20, log):
@@ -128,7 +136,7 @@ def test_main():
                 f.write("{}")
             code, out = run_main(["--url", url, "--out", shots])
             assert code == 3 and "Node.js not found" in out, out
-            start = f"{sys.executable} -m http.server {port} --bind 127.0.0.1"
+            start = static_server(port)
             fake_node(bin_dir, {"error": "browser", "message": "Executable doesn't exist at /x/chrome"}, 3)
             code, out = run_main(["--url", url, "--out", shots, "--start", start])
             assert code == 3 and "Executable doesn't exist" in out and verify_ui.INSTALL in out, out
