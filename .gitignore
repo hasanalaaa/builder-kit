@@ -7,3 +7,4 @@ SHIP_REPORT.md
 !.env.example
 plugins/builder-kit/evals/results/
 builder-kit.sarif
+.claude/worktrees/

@@ -46,11 +46,7 @@ def read(root, rel):
 
 
 def find(root, name_rx):
-    hits = []
-    for d, dirs, files in os.walk(root):
-        dirs[:] = [x for x in dirs if x not in IGNORE_DIRS]
-        hits += [os.path.relpath(os.path.join(d, f), root) for f in files if re.search(name_rx, f)]
-    return hits
+    return [f for f in bk.walk(root, ignore=IGNORE_DIRS, dot_dirs=True) if re.search(name_rx, f.rsplit("/", 1)[-1])]
 
 
 def expo_checks(root, findings, deps):

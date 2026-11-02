@@ -132,6 +132,8 @@ RULES = [
      "request body written straight to the database; copy allowed fields from a strict schema"),
 ]
 COMPILED = [(lvl, chk, rule, exts, re.compile(rx), msg) for lvl, chk, rule, exts, rx, msg in RULES]
+SSRF_GUARD = re.compile(r"isPrivate\w*|169\.254|192\.168|\bloopback\b|ipaddr", re.I)
+SAFE_REDIRECT = re.compile(r"redirect\s*:\s*['\"](?:manual|error)['\"]|request-filtering-agent|ssrf-req-filter")
 
 findings = []
 
@@ -191,6 +193,11 @@ def scan_file(rel, text):
     if ext in SRC and "webhook" in rel.lower() and not is_test(rel) and not re.search(
             r"constructEvent|verif\w*|signature|hmac|svix|timingSafeEqual|compare_digest", text, re.I):
         report("WARN", "19", "webhook-unsigned", rel, 0, "webhook handler without visible signature verification")
+    if ext in JS and not is_test(rel) and SSRF_GUARD.search(text) and not SAFE_REDIRECT.search(text):
+        first = next((i for i, line in enumerate(lines, 1) if re.search(r"\bfetch\(", line)), 0)
+        if first:  # the file guards the first address but fetch follows redirects to any address by default
+            report("ERROR", "B2", "ssrf-follows-redirects", rel, first,
+                   "SSRF guard checks the first URL but fetch follows redirects; use redirect: 'manual' and re-check every hop (P14)")
     if re.search(r"credentials\s*:\s*true|allow_credentials\s*=\s*True", text) and re.search(
             r"\borigin\s*:\s*(?:['\"]\*['\"]|true)\b|allow_origins\s*=\s*\[\s*['\"]\*['\"]", text):
         report("ERROR", "13", "cors-any-origin-with-credentials", rel, 0, "any origin allowed together with credentials")

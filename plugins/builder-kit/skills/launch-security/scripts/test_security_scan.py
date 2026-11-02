@@ -29,6 +29,7 @@ def main():
         "supabase/migrations/1.sql": "create table public.orders (id uuid);\ncreate table public.notes (id uuid);\n"
                                      "alter table public.notes enable row level security;\n",
         "server.js": "app.use(cors({ origin: true, credentials: true }));\n",
+        "app/api/preview/route.ts": "if (isPrivateIp(addr)) throw new Error('blocked');\nconst r = await fetch(url, { signal });\n",
     }
     good = {
         "src/a.ts": "const rows = await sql`SELECT * FROM users WHERE id = ${id}`;\nconst t = randomBytes(32).toString('base64url');\n"
@@ -37,11 +38,12 @@ def main():
         "app/api/webhooks/stripe/route.ts": "const e = stripe.webhooks.constructEvent(body, sig, secret);\n",
         "supabase/migrations/1.sql": "create table public.orders (id uuid);\nalter table public.orders enable row level security;\n",
         "server.js": "app.use(cors({ origin: ['https://app.example.com'], credentials: true }));\n",
+        "app/api/preview/route.ts": "if (isPrivateIp(addr)) throw new Error('blocked');\nconst r = await fetch(url, { redirect: 'manual' });\n",
     }
     expect = {"hardcoded-secret", "sql-string-built", "xss-sink", "weak-random-secret", "secret-fallback", "open-redirect",
               "token-in-localstorage", "command-injection", "mass-assignment", "server-secret-in-client",
               "secret-in-public-env", "tls-verification-off", "debug-in-prod", "weak-password-hash", "unsafe-deserialize",
-              "webhook-unsigned", "firebase-open-rules", "table-without-rls", "cors-any-origin-with-credentials"}
+              "webhook-unsigned", "ssrf-follows-redirects", "firebase-open-rules", "table-without-rls", "cors-any-origin-with-credentials"}
     for name, tree in (("bad", bad), ("good", good)):
         with tempfile.TemporaryDirectory() as tmp:
             for rel, text in tree.items():

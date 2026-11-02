@@ -15,7 +15,10 @@ plugins/builder-kit/
   skills/ship/scripts/ship_check.py  the gate: picks relevant scanners, runs them in parallel, dedupes, verdict
   lib/bk.py                          shared by every scanner: walk(), waivers, report() text/JSON
   hooks/post_edit.py                 PostToolUse hook: per-file scan of the edited file, blocks on ERROR only
-  commands/*.md, agents/*.md         slash commands and reviewer subagents
+  hooks/stop_gate.py + project_checks.py  Stop hook: scanners + the project's typecheck/lint/related tests on files changed this session
+  hooks/session_start.py             SessionStart hook: repeated lessons + the repo-map command (~100 tokens)
+  lib/lessons.py                     per-repo lessons memory in <git-common-dir>/builder-kit/lessons.json
+  commands/*.md, agents/*.md         slash commands; subagents routed by model (explorer haiku, slice-builder sonnet, reviewers)
   tests/test_integrity.py            cross-file consistency
   evals/<case>/                      claude plugin eval suite
 ```

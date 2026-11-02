@@ -8,14 +8,17 @@ blocks the stop once; on the follow-up stop (stop_hook_active) it never blocks a
 """
 import json
 import os
+import re
 import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import post_edit  # noqa: E402
 import project_checks  # noqa: E402
+import lessons  # noqa: E402  (lib/ is on sys.path via post_edit)
 
 MAX_FILES = 60
+CHECK_HEADER = re.compile(r"^\[([\w-]+)")  # project_checks headers: "[typecheck: tsc --noEmit] ..."
 CHECK_BUDGET = 90  # seconds for project checks; the Stop hook timeout in hooks.json (120) leaves room for the scanners
 
 
@@ -32,15 +35,18 @@ def session_start(transcript_path):
 
 
 def changed_files(cwd, since):
+    top = subprocess.run(["git", "-C", cwd, "rev-parse", "--show-cdup"], capture_output=True, text=True, timeout=15)
     out = subprocess.run(["git", "-C", cwd, "status", "--porcelain", "-z", "--untracked-files=all"],
                          capture_output=True, text=True, timeout=15)
-    if out.returncode != 0:
+    if top.returncode != 0 or out.returncode != 0:
         return []
+    # porcelain paths are relative to the repo root, not cwd; --show-cdup keeps cwd's spelling (/var vs /private/var)
+    root = os.path.normpath(os.path.join(cwd, top.stdout.strip()))
     files = []
     for entry in out.stdout.split("\0"):
         if len(entry) < 4 or "D" in entry[:2]:
             continue
-        path = os.path.join(cwd, entry[3:])
+        path = os.path.join(root, entry[3:])
         try:
             if os.path.getmtime(path) >= since:
                 files.append(path)
@@ -60,18 +66,21 @@ def main():
         return 0
     cwd = data.get("cwd") or os.getcwd()
     try:
-        report = []
+        report, found = [], []
         files = changed_files(cwd, session_start(data.get("transcript_path")))
         for path in files:
             result = post_edit.blocking_errors(path, cwd)
             if result and result[1]:
                 report += post_edit.describe(*result, limit=6)
+                found += [("ERROR", rule, result[0], line or 0, msg) for _, rule, line, msg in result[1]]
         checks = [] if stop_checks_off() else project_checks.run(cwd, files, CHECK_BUDGET)
+        found += [("ERROR", "project-" + m.group(1), ".", 0, line) for line in checks if (m := CHECK_HEADER.match(line))]
     except (Exception, SystemExit) as e:  # a broken guardrail must never trap the session
         print(f"builder-kit stop gate skipped: {type(e).__name__}: {e}", file=sys.stderr)
         return 0
     if not report and not checks:
         return 0
+    lessons.record(cwd, found)  # once per blocking stop; never raises
     print("\n".join(["builder-kit: not done yet. Files you changed this session still have blocking issues:"] + report + checks
                     + ["Fix them, re-check, then finish." + (" " + post_edit.WAIVER_HINT if report else "")]), file=sys.stderr)
     return 2

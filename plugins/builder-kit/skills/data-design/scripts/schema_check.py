@@ -206,16 +206,8 @@ def finish(m):
 
 
 def collect(root):
-    sql, prisma = [], []
-    for d, dirs, files in os.walk(root):
-        dirs[:] = sorted(x for x in dirs if x not in IGNORE_DIRS)
-        for f in sorted(files):
-            rel = os.path.relpath(os.path.join(d, f), root)
-            if f.endswith(".sql"):
-                sql.append(rel)
-            elif f == "schema.prisma" or f.endswith(".prisma"):
-                prisma.append(rel)
-    return sorted(sql), prisma
+    files = bk.walk(root, (".sql", ".prisma"), IGNORE_DIRS, dot_dirs=True)  # honors .gitignore (worktree copies, build output)
+    return [f for f in files if f.endswith(".sql")], [f for f in files if f.endswith(".prisma")]
 
 
 def run(root):

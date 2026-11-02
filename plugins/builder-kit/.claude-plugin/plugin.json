@@ -1,7 +1,7 @@
 {
   "name": "builder-kit",
-  "description": "Complete engineering standard for building websites, web apps, mobile apps and AI-built products the way senior teams do: 26 skills from idea to operation (spec, stack, architecture, security, data, API, errors, tests, front end, design system, Arabic/RTL, accessibility, AI features, payments, notifications, performance, SEO, deploy, observability, legal, mobile release, AI workflow, rescue, debugging, docs, and the ship conductor), 25+ tested tools with one SHIP/BLOCKED gate, an edit-time guardrail hook, commands and reviewer agents.",
-  "version": "2.2.0",
+  "description": "Complete engineering standard for building websites, web apps, mobile apps and AI-built products the way senior teams do: 27 skills from idea to operation (spec, stack, architecture, security, data, API, errors, tests, front end, design system, Arabic/RTL, accessibility, AI features, payments, notifications, performance, SEO, deploy, observability, legal, mobile release, AI workflow, rescue, debugging, docs, tested code recipes, and the ship conductor), 25+ tested tools with one SHIP/BLOCKED gate, edit-time and end-of-turn gates that also run the project's own typecheck and tests, per-repo lessons memory, a browser check, and model-routed agents.",
+  "version": "2.3.0",
   "author": {
     "name": "Hasan"
   }

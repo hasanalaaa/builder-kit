@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Self-test for schema_check. Run: python3 test_schema_check.py"""
 import os
+import subprocess
 import sys
 import tempfile
 
@@ -57,8 +58,10 @@ model Invoice {
 """
 
 
-def run_on(files):
+def run_on(files, git=False):
     with tempfile.TemporaryDirectory() as d:
+        if git:
+            subprocess.run(["git", "-C", d, "init", "-q"], check=True)
         for rel, body in files.items():
             os.makedirs(os.path.join(d, os.path.dirname(rel)), exist_ok=True)
             with open(os.path.join(d, rel), "w", encoding="utf-8") as f:
@@ -78,7 +81,16 @@ def test_good():
     assert not got, sorted(got)
 
 
+def test_gitignored_copies():
+    # An ignored copy (agent worktree, build output) that sorts first must not make the real table look pre-existing.
+    table = "create table notes (id uuid primary key, created_at timestamptz not null default now());\n"
+    got = run_on({".gitignore": "copies/\n", "copies/m.sql": table,
+                  "migrations/001.sql": table + "create index notes_created_idx on notes (created_at);\n"}, git=True)
+    assert "index-not-concurrent" not in got, sorted(got)
+
+
 if __name__ == "__main__":
     test_bad()
     test_good()
+    test_gitignored_copies()
     print("selftest OK")

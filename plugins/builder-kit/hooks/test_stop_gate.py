@@ -37,6 +37,10 @@ if __name__ == "__main__":
         write(d, "app/api/x/route.ts", "export async function GET() { try { await go() } catch (e) {} }\n")
         code, err = run(d, transcript)
         assert code == 2 and "empty-catch" in err and "route.ts" in err and "old.ts" not in err, (code, err)
+        with open(os.path.join(d, ".git", "builder-kit", "lessons.json"), encoding="utf-8") as f:
+            assert "empty-catch" in json.load(f)["rules"], "a blocking stop is recorded as a lesson"
+        code, err = run(os.path.join(d, "app"), transcript)
+        assert code == 2 and "empty-catch" in err, ("cwd in a subfolder must still see repo changes", code, err)
         assert run(d, transcript, active=True)[0] == 0, "must never block twice in a row"
         assert run(d, transcript, env={"BUILDER_KIT_HOOKS": "off"})[0] == 0
         write(d, "app/api/x/route.ts", "export async function GET() { await go() }\n")
@@ -60,6 +64,8 @@ if __name__ == "__main__":
         code, err = run(d, transcript)
         assert code == 2 and "[typecheck: tsc --noEmit]" in err and "TS2322" in err and "old.ts" not in err, (code, err)
         assert "bk-ignore" not in err, "the waiver hint is only for scanner findings"
+        with open(os.path.join(d, ".git", "builder-kit", "lessons.json"), encoding="utf-8") as f:
+            assert "project-typecheck" in json.load(f)["rules"], "a failing project check is recorded as a lesson"
         assert run(d, transcript, active=True)[0] == 0, "must never block twice in a row"
         assert run(d, transcript, env={"BUILDER_KIT_STOP_CHECKS": "off"})[0] == 0
         assert run(d, transcript, env={"BUILDER_KIT_HOOKS": "off"})[0] == 0

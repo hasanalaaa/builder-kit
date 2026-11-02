@@ -30,6 +30,7 @@ Specialists by feature type during stage 7: payments → `payments-billing`; ema
 ## 3. LAUNCH checklist
 
 - [ ] `ship_check.py . --with-tests` → SHIP.
+- [ ] Real pages checked in a browser: `frontend-quality/scripts/verify_ui.py --url <preview or prod url> --routes <key routes>` (add `--rtl` for Arabic) → 0 ERROR; skim the screenshots of key templates.
 - [ ] `launch-security` AUDIT complete: `SECURITY_REVIEW.md` no open Critical/High; `SECURITY_REPORT.md` written; live checks (`check-headers.sh`, `check-exposed.sh`) pass.
 - [ ] Performance: Core Web Vitals good on key templates (`performance`); `perf_budget` within budget.
 - [ ] SEO/social: `seo_check.py <prod urls>` 0 ERROR; Search Console verified (`seo-discoverability`).
