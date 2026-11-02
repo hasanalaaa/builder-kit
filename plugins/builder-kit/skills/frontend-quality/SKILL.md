@@ -11,6 +11,7 @@ Design (`design-system`) decides what the UI looks like. This skill decides how 
 |------|-----------|
 | `references/patterns.md` | State placement, data fetching (RSC, loaders, TanStack Query), server/client boundary, forms, URL state, component design, rendering performance, TypeScript, styling, env/config, React Native notes, Vue/Svelte notes, anti-patterns with fixes |
 | `scripts/fe_check.py` | Scan for derived state in effects, fetch in `useEffect`, index keys, `any` / `@ts-ignore`, `console.log`, `"use client"` on pages/layouts, raw `<img>` in Next.js, inline component definitions, prop drilling depth hints, missing `key` in maps |
+| `scripts/verify_ui.py` | Open the running app in a real browser (Playwright from the project) at 375 and 1280 px: console/page errors, failed requests, sideways scroll on phones, images without alt or broken, axe-core violations, `dir="rtl"`. Prints only problems plus screenshot paths |
 
 ## 1. Rules
 
@@ -33,10 +34,12 @@ Design (`design-system`) decides what the UI looks like. This skill decides how 
 4. Interactions: handlers do the work; mutations invalidate/revalidate the right cache keys; optimistic UI only with rollback.
 5. Forms: schema → form → server action/endpoint → field errors.
 6. Run `python3 <skill>/scripts/fe_check.py .`, `design_lint.py`, typecheck, tests.
+7. **Verify in the browser** before saying the screen works: `python3 <skill>/scripts/verify_ui.py --start "npm run dev" --url http://localhost:3000 --routes / /changed-route` (add `--rtl` for Arabic UI). Fix every ERROR; open a printed screenshot only when a finding needs a look. Exit 3 means Playwright is missing: `npm i -D @playwright/test axe-core && npx playwright install chromium`.
 
 ## 3. Done when
 
 - [ ] `fe_check.py` 0 ERROR; typecheck and lint clean.
+- [ ] `verify_ui.py` 0 ERROR on every changed route (or Playwright unavailable, said so).
 - [ ] No derived state in effects; no fetch-in-effect where the framework has a data layer.
 - [ ] URL reflects shareable state; back/forward work.
 - [ ] Forms validated client + server with the same schema; server errors shown on fields.
