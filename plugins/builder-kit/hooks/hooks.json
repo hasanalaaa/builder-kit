@@ -1,5 +1,5 @@
 {
-  "description": "builder-kit guardrails: scan each edited file, and block ending a turn while files changed this session have blocking findings. Disable with BUILDER_KIT_HOOKS=off.",
+  "description": "builder-kit guardrails: scan each edited file, and block ending a turn while files changed this session have blocking findings or fail the project's own typecheck, lint or related tests. Disable with BUILDER_KIT_HOOKS=off (project checks only: BUILDER_KIT_STOP_CHECKS=off).",
   "hooks": {
     "PostToolUse": [
       {
@@ -19,7 +19,7 @@
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/stop_gate.py\"",
-            "timeout": 30
+            "timeout": 120
           }
         ]
       }
