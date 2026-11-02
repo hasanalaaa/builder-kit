@@ -2,8 +2,9 @@
 """builder-kit Stop hook: Claude can't end its turn while files it changed this session have blocking findings.
 
 Scans files git reports as modified or new since the session's transcript was created, with the same
-per-file scanners and waivers as the edit hook. Exit 2 (stderr goes back to Claude) blocks the stop once;
-on the follow-up stop (stop_hook_active) it never blocks again, so it can't loop.
+per-file scanners and waivers as the edit hook, then runs the project's own typecheck, lint and related tests
+on them (project_checks.py; BUILDER_KIT_STOP_CHECKS=off skips that part). Exit 2 (stderr goes back to Claude)
+blocks the stop once; on the follow-up stop (stop_hook_active) it never blocks again, so it can't loop.
 """
 import json
 import os
@@ -12,8 +13,14 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import post_edit  # noqa: E402
+import project_checks  # noqa: E402
 
 MAX_FILES = 60
+CHECK_BUDGET = 90  # seconds for project checks; the Stop hook timeout in hooks.json (120) leaves room for the scanners
+
+
+def stop_checks_off():
+    return os.environ.get("BUILDER_KIT_STOP_CHECKS", "on").lower() in ("off", "0", "false", "no")
 
 
 def session_start(transcript_path):
@@ -54,17 +61,19 @@ def main():
     cwd = data.get("cwd") or os.getcwd()
     try:
         report = []
-        for path in changed_files(cwd, session_start(data.get("transcript_path"))):
+        files = changed_files(cwd, session_start(data.get("transcript_path")))
+        for path in files:
             result = post_edit.blocking_errors(path, cwd)
             if result and result[1]:
                 report += post_edit.describe(*result, limit=6)
+        checks = [] if stop_checks_off() else project_checks.run(cwd, files, CHECK_BUDGET)
     except (Exception, SystemExit) as e:  # a broken guardrail must never trap the session
         print(f"builder-kit stop gate skipped: {type(e).__name__}: {e}", file=sys.stderr)
         return 0
-    if not report:
+    if not report and not checks:
         return 0
-    print("\n".join(["builder-kit: not done yet. Files you changed this session still have blocking issues:"] + report
-                    + ["Fix them, re-check, then finish. " + post_edit.WAIVER_HINT]), file=sys.stderr)
+    print("\n".join(["builder-kit: not done yet. Files you changed this session still have blocking issues:"] + report + checks
+                    + ["Fix them, re-check, then finish." + (" " + post_edit.WAIVER_HINT if report else "")]), file=sys.stderr)
     return 2
 
 
