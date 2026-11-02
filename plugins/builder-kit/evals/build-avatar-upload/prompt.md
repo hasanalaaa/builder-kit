@@ -1,6 +1,6 @@
 ---
 tags: [build, security]
-runs: 1
+runs: 3
 max_turns: 25
 timeout_seconds: 600
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
