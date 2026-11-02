@@ -1,0 +1,25 @@
+{
+  "name": "file-upload",
+  "summary": "Authenticated upload route: Content-Length and size caps, type from magic bytes (not the client MIME), random server-side name, no path traversal.",
+  "files": [
+    {"from": "route.ts", "to": "src/app/api/uploads/route.ts"},
+    {"from": "upload.ts", "to": "src/lib/upload.ts"},
+    {"from": "upload.test.ts", "to": "src/app/api/uploads/upload.test.ts"},
+    {"from": "../_shared/env.ts", "to": "src/lib/env.ts"},
+    {"from": "../_shared/http.ts", "to": "src/lib/http.ts"},
+    {"from": "../_shared/auth.ts", "to": "src/lib/auth.ts"},
+    {"from": "../_shared/fake-auth.ts", "to": "src/test/fake-auth.ts"},
+    {"from": "../_shared/vitest.config.mts", "to": "vitest.config.mts", "optional": true}
+  ],
+  "deps": ["zod@^4"],
+  "devDeps": ["vitest", "@types/node@^22"],
+  "env": {"UPLOAD_DIR": "absolute path of a private folder outside public/ (only while saveUpload writes to disk)"},
+  "adapt": [
+    "src/lib/auth.ts requireUser(): wire to your auth provider (it returns 401 until you do).",
+    "src/lib/upload.ts TYPES and MAX_UPLOAD_BYTES: your allowlist and cap. Keep sniff() deciding the type.",
+    "src/lib/upload.ts saveUpload(): swap the disk write for a private bucket put; keep the generated key.",
+    "Images: re-encode (sharp) to strip EXIF and polyglots before storing.",
+    "route.ts: store (key, owner id) in your DB; serve files with signed URLs, X-Content-Type-Options: nosniff and Content-Disposition: attachment for non-images.",
+    "Add a per-user rate limit (launch-security P10)."
+  ]
+}

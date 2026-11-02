@@ -1,0 +1,27 @@
+{
+  "name": "stripe-webhook",
+  "summary": "Stripe webhook: raw-body signature check, paid checkout grants credits, event.id idempotency table in the same transaction, SQL migration.",
+  "files": [
+    {"from": "route.ts", "to": "src/app/api/webhooks/stripe/route.ts"},
+    {"from": "route.test.ts", "to": "src/app/api/webhooks/stripe/route.test.ts"},
+    {"from": "migration.sql", "to": "db/migrations/stripe_webhook.sql"},
+    {"from": "../_shared/env.ts", "to": "src/lib/env.ts"},
+    {"from": "../_shared/db.ts", "to": "src/lib/db.ts"},
+    {"from": "../_shared/fake-db.ts", "to": "src/test/fake-db.ts"},
+    {"from": "../_shared/vitest.config.mts", "to": "vitest.config.mts", "optional": true}
+  ],
+  "deps": ["stripe", "pg"],
+  "devDeps": ["vitest", "@types/pg", "@electric-sql/pglite", "@types/node@^22"],
+  "env": {
+    "STRIPE_SECRET_KEY": "server-only Stripe secret key (test mode key in dev)",
+    "STRIPE_WEBHOOK_SECRET": "signing secret of this endpoint (Dashboard or `stripe listen`)",
+    "DATABASE_URL": "Postgres connection string"
+  },
+  "adapt": [
+    "Checkout creation (your code): set client_reference_id = user id and metadata.credits from your server catalog; the client never sends amounts.",
+    "fulfil(): change what a paid checkout grants (credits, entitlements, an order); keep it inside the same tx as the stripe_events insert.",
+    "Migration: rename to your migration tool's convention and add the FK from credit_balances.user_id to your users table.",
+    "Subscriptions: handle customer.subscription.* and invoice.* events the same way (payments-billing references/billing.md).",
+    "Slow work (emails, provisioning): enqueue a job inside the tx instead of doing it inline; return 200 fast."
+  ]
+}

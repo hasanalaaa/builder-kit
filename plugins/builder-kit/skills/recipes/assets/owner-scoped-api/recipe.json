@@ -1,0 +1,28 @@
+{
+  "name": "owner-scoped-api",
+  "summary": "CRUD routes (notes) with session check, strict zod input, every query scoped by owner id, 404 for others' rows, one error JSON shape, capped keyset pagination.",
+  "files": [
+    {"from": "route.ts", "to": "src/app/api/notes/route.ts"},
+    {"from": "item-route.ts", "to": "src/app/api/notes/[id]/route.ts"},
+    {"from": "notes.ts", "to": "src/features/notes/notes.ts"},
+    {"from": "notes.test.ts", "to": "src/features/notes/notes.test.ts"},
+    {"from": "migration.sql", "to": "db/migrations/notes.sql"},
+    {"from": "../_shared/env.ts", "to": "src/lib/env.ts"},
+    {"from": "../_shared/http.ts", "to": "src/lib/http.ts"},
+    {"from": "../_shared/auth.ts", "to": "src/lib/auth.ts"},
+    {"from": "../_shared/db.ts", "to": "src/lib/db.ts"},
+    {"from": "../_shared/fake-db.ts", "to": "src/test/fake-db.ts"},
+    {"from": "../_shared/fake-auth.ts", "to": "src/test/fake-auth.ts"},
+    {"from": "../_shared/vitest.config.mts", "to": "vitest.config.mts", "optional": true}
+  ],
+  "deps": ["zod@^4", "pg"],
+  "devDeps": ["vitest", "@types/pg", "@electric-sql/pglite", "@types/node@^22"],
+  "env": {"DATABASE_URL": "Postgres connection string"},
+  "adapt": [
+    "src/lib/auth.ts requireUser(): wire to your auth provider (it returns 401 until you do).",
+    "Rename notes → your resource in notes.ts, both routes, the migration and the test; keep `and user_id = $n` in every query.",
+    "Teams/tenants: replace user_id with org_id taken from the verified membership, never from the request.",
+    "Add the FK to your users table in the migration; rename it to your migration tool's convention.",
+    "Rate-limit writes if users can create a lot (launch-security P10)."
+  ]
+}
